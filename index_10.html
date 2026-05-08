@@ -1,0 +1,1684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>National Higher Education Policy Survey | Sri Lanka</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+:root {
+  --navy: #0d1f3c;
+  --navy-light: #1a3560;
+  --gold: #b8933a;
+  --gold-light: #d4af6a;
+  --cream: #fdfaf5;
+  --white: #ffffff;
+  --text: #1a1a2e;
+  --text-light: #4a5568;
+  --border: #e2d9c8;
+  --required: #c0392b;
+  --section-bg: #f5f0e8;
+  --input-bg: #fff;
+  --shadow: 0 4px 24px rgba(13,31,60,0.08);
+  --shadow-lg: 0 8px 40px rgba(13,31,60,0.14);
+  --radius: 8px;
+  --transition: 0.2s ease;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* HEADER */
+.header {
+  background: var(--navy);
+  color: white;
+  padding: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+}
+.header-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+.header-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  line-height: 1.3;
+  flex: 1;
+}
+.header-title span {
+  display: block;
+  font-size: 0.75rem;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  opacity: 0.75;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* LANGUAGE SWITCHER */
+.lang-switcher {
+  display: flex;
+  gap: 4px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 100px;
+  padding: 4px;
+}
+.lang-btn {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.7);
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 5px 12px;
+  border-radius: 100px;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.lang-btn:hover { color: white; background: rgba(255,255,255,0.1); }
+.lang-btn.active { background: var(--gold); color: white; }
+
+/* PROGRESS BAR */
+.progress-wrap {
+  background: var(--navy-light);
+  height: 4px;
+}
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-light), var(--gold));
+  transition: width 0.4s ease;
+  width: 0%;
+}
+
+/* MAIN */
+.main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+}
+
+/* WELCOME CARD */
+.welcome-card {
+  background: var(--white);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+.welcome-banner {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+  padding: 40px 40px 32px;
+  position: relative;
+  overflow: hidden;
+}
+.welcome-banner::before {
+  content: '';
+  position: absolute;
+  right: -40px;
+  top: -40px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 2px solid rgba(184,147,58,0.2);
+}
+.welcome-banner::after {
+  content: '';
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 1px solid rgba(184,147,58,0.15);
+}
+.mohe-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  margin-bottom: 12px;
+}
+.welcome-banner h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: white;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+.welcome-banner h1 em {
+  font-style: normal;
+  color: var(--gold-light);
+}
+.welcome-body {
+  padding: 32px 40px;
+}
+.welcome-body p {
+  font-size: 0.93rem;
+  color: var(--text-light);
+  line-height: 1.75;
+  margin-bottom: 20px;
+}
+.survey-meta {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--gold);
+  font-weight: 600;
+}
+.meta-item::before { font-size: 1rem; }
+.meta-item.time::before { content: '⏱'; }
+.meta-item.anon::before { content: '🔒'; }
+.meta-item.lang::before { content: '🌐'; }
+
+/* SECTION WRAPPER */
+.form-section {
+  background: white;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+.section-header {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+  padding: 20px 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.section-number {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: white;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: white;
+}
+.section-body {
+  padding: 28px 32px;
+}
+
+/* QUESTION GROUPS */
+.question-group {
+  margin-bottom: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+.question-group:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+.question-label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+.question-label .req { color: var(--required); margin-left: 3px; }
+.question-hint {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  margin-bottom: 10px;
+  font-style: italic;
+}
+
+/* INPUTS */
+input[type="text"], input[type="email"], input[type="number"], textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  color: var(--text);
+  background: var(--input-bg);
+  transition: var(--transition);
+  outline: none;
+}
+input[type="text"]:focus, input[type="email"]:focus, input[type="number"]:focus, textarea:focus {
+  border-color: var(--navy);
+  box-shadow: 0 0 0 3px rgba(13,31,60,0.08);
+}
+textarea { resize: vertical; min-height: 90px; }
+
+/* RADIO & CHECKBOX */
+.options-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.option-btn {
+  position: relative;
+}
+.option-btn input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.option-btn label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 100px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 400;
+  transition: var(--transition);
+  user-select: none;
+  white-space: nowrap;
+  background: white;
+}
+.option-btn label:hover { border-color: var(--gold); background: #fdf8ef; }
+.option-btn input:checked + label {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: white;
+  font-weight: 500;
+}
+
+/* RATING SCALE */
+.rating-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--section-bg);
+}
+.rating-row:last-child { border-bottom: none; }
+.rating-label { flex: 1; font-size: 0.88rem; color: var(--text); }
+.rating-options { display: flex; gap: 6px; flex-shrink: 0; }
+.rating-option { position: relative; }
+.rating-option input { position: absolute; opacity: 0; width: 0; height: 0; }
+.rating-option label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid var(--border);
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: var(--transition);
+  background: white;
+  color: var(--text-light);
+}
+.rating-option label:hover { border-color: var(--gold); color: var(--gold); }
+.rating-option input:checked + label { background: var(--gold); border-color: var(--gold); color: white; }
+
+.rating-scale-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 8px;
+  margin-bottom: 4px;
+}
+.rating-scale-header .label-spacer { flex: 1; }
+.scale-labels { display: flex; gap: 6px; }
+.scale-label { width: 36px; text-align: center; font-size: 0.7rem; color: var(--text-light); font-weight: 500; }
+
+/* NOTE BOXES */
+.note-box {
+  background: var(--section-bg);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+/* SECTION QUESTION NOTE (instructions) */
+.q-note {
+  font-weight: 600;
+  color: var(--navy);
+  font-size: 0.92rem;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--border);
+}
+
+/* NAVIGATION */
+.nav-area {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-top: 1px solid var(--border);
+  padding: 14px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.08);
+  z-index: 50;
+}
+.nav-left { display: flex; align-items: center; gap: 12px; }
+.step-info { font-size: 0.82rem; color: var(--text-light); }
+.btn {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-secondary { background: var(--section-bg); color: var(--navy); }
+.btn-secondary:hover { background: var(--border); }
+.btn-primary { background: var(--navy); color: white; }
+.btn-primary:hover { background: var(--navy-light); box-shadow: 0 4px 16px rgba(13,31,60,0.25); }
+.btn-gold { background: var(--gold); color: white; }
+.btn-gold:hover { background: var(--gold-light); box-shadow: 0 4px 16px rgba(184,147,58,0.35); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* THANK YOU */
+.thankyou {
+  text-align: center;
+  padding: 80px 40px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+}
+.thankyou .check { font-size: 4rem; margin-bottom: 20px; }
+.thankyou h2 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--navy); margin-bottom: 12px; }
+.thankyou p { color: var(--text-light); max-width: 480px; margin: 0 auto 28px; }
+
+/* HIDDEN */
+.hidden { display: none !important; }
+
+/* FIELD ERROR */
+.field-error { border-color: var(--required) !important; }
+.error-msg { font-size: 0.78rem; color: var(--required); margin-top: 5px; }
+
+/* CONDITIONAL QUESTION */
+.cond-question { display: none; }
+.cond-question.visible { display: block; }
+
+/* SUB-QUESTIONS */
+.sub-questions { margin-left: 0; padding: 16px; background: var(--section-bg); border-radius: var(--radius); margin-top: 12px; }
+.sub-questions .question-group { padding-bottom: 16px; margin-bottom: 16px; }
+.sub-questions .question-group:last-child { margin-bottom: 0; padding-bottom: 0; }
+
+/* SUGGESTION FIELDS */
+.suggestion-fields { display: flex; flex-direction: column; gap: 10px; }
+.suggestion-field { display: flex; gap: 8px; align-items: flex-start; }
+.suggestion-num { width: 28px; height: 38px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 600; color: var(--gold); flex-shrink: 0; }
+
+@media (max-width: 600px) {
+  .main { padding: 20px 16px 80px; }
+  .section-body { padding: 20px 18px; }
+  .welcome-banner, .welcome-body { padding: 24px 20px; }
+  .welcome-banner h1 { font-size: 1.6rem; }
+  .header-title { font-size: 1rem; }
+  .rating-option label { width: 30px; height: 30px; font-size: 0.75rem; }
+  .options-grid { flex-direction: column; }
+  .option-btn label { white-space: normal; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-title">
+      <span id="hdr-mohe">Ministry of Higher Education, Sri Lanka</span>
+      <span id="hdr-title" style="font-size:1.1rem;font-family:'Cormorant Garamond',serif;font-weight:600;opacity:1;">National Higher Education Policy Survey</span>
+    </div>
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('en')">English</button>
+      <button class="lang-btn" onclick="setLang('si')">සිංහල</button>
+      <button class="lang-btn" onclick="setLang('ta')">தமிழ்</button>
+    </div>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progBar"></div></div>
+</div>
+
+<div class="main" id="mainContent">
+  <!-- Welcome -->
+  <div id="pageWelcome" class="welcome-card">
+    <div class="welcome-banner">
+      <div class="mohe-label" id="wMohe">Ministry of Higher Education · Sri Lanka</div>
+      <h1 id="wTitle">National Higher Education<br><em>Policy Survey</em></h1>
+    </div>
+    <div class="welcome-body">
+      <p id="wIntro">The Ministry of Higher Education (MOHE) is developing a National Higher Education Policy to build a high-quality, inclusive, and future-ready education system in Sri Lanka. Your views and experiences as a student, graduate, employer, academic, or member of the public are essential to shape policies that ensure our graduates are skilled, employable, and globally competitive.</p>
+      <p id="wNote">This anonymous survey takes about <strong>10–15 minutes</strong> and will help identify key priorities and reforms for the higher education sector. Thank you for contributing to the future of higher education in Sri Lanka.</p>
+      <div class="survey-meta">
+        <div class="meta-item time" id="metaTime">10–15 minutes</div>
+        <div class="meta-item anon" id="metaAnon">Anonymous</div>
+        <div class="meta-item lang" id="metaLang">3 languages available</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 0: Identify yourself -->
+  <div id="page0" class="hidden">
+    <div class="form-section">
+      <div class="section-header">
+        <div class="section-number">→</div>
+        <div class="section-title" id="s0title">Who are you?</div>
+      </div>
+      <div class="section-body">
+        <div class="question-group">
+          <div class="question-label" id="q0label">Identify yourself – you are</div>
+          <div class="options-grid" id="q0opts"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STUDENT PAGES -->
+  <!-- Page S1: Profile -->
+  <div id="pageS1" class="hidden">
+    <div class="form-section">
+      <div class="section-header"><div class="section-number">A</div><div class="section-title" id="sS1">Profile</div></div>
+      <div class="section-body" id="bodyS1"></div>
+    </div>
+  </div>
+
+  <!-- Page S2: Access & Financial -->
+  <div id="pageS2" class="hidden">
+    <div class="form-section">
+      <div class="section-header"><div class="section-number">B</div><div class="section-title" id="sS2">Access, Preparation &amp; Financial Situation</div></div>
+      <div class="section-body" id="bodyS2"></div>
+    </div>
+  </div>
+
+  <!-- Page S3: Current Experience -->
+  <div id="pageS3" class="hidden">
+    <div class="form-section">
+      <div class="section-header"><div class="section-number">C</div><div class="section-title" id="sS3">Current Experience</div></div>
+      <div class="section-body" id="bodyS3"></div>
+    </div>
+  </div>
+
+  <!-- Page S4: Aspirations -->
+  <div id="pageS4" class="hidden">
+    <div class="form-section">
+      <div class="section-header"><div class="section-number">D</div><div class="section-title" id="sS4">Graduate Aspirations &amp; Employability</div></div>
+      <div class="section-body" id="bodyS4"></div>
+    </div>
+  </div>
+
+  <!-- Page S5: Gaps & Suggestions -->
+  <div id="pageS5" class="hidden">
+    <div class="form-section">
+      <div class="section-header"><div class="section-number">E</div><div class="section-title" id="sS5">Curriculum Gaps &amp; Suggestions</div></div>
+      <div class="section-body" id="bodyS5"></div>
+    </div>
+  </div>
+
+  <!-- OTHER STAKEHOLDER PAGES -->
+  <!-- Page O1: Profile -->
+  <div id="pageO1" class="hidden">
+    <div class="form-section">
+      <div class="section-header"><div class="section-number">A</div><div class="section-title" id="sO1">Your Profile</div></div>
+      <div class="section-body" id="bodyO1"></div>
+    </div>
+  </div>
+
+  <!-- Page O2: Assessment -->
+  <div id="pageO2" class="hidden">
+    <div class="form-section">
+      <div class="section-header"><div class="section-number">B</div><div class="section-title" id="sO2">Assessment of Graduates</div></div>
+      <div class="section-body" id="bodyO2"></div>
+    </div>
+  </div>
+
+  <!-- Page O3: Policy & Priorities -->
+  <div id="pageO3" class="hidden">
+    <div class="form-section">
+      <div class="section-header"><div class="section-number">C</div><div class="section-title" id="sO3">Policy Recommendations &amp; National Priorities</div></div>
+      <div class="section-body" id="bodyO3"></div>
+    </div>
+  </div>
+
+  <!-- Page O4: Suggestions -->
+  <div id="pageO4" class="hidden">
+    <div class="form-section">
+      <div class="section-header"><div class="section-number">D</div><div class="section-title" id="sO4">Suggestions &amp; Comments</div></div>
+      <div class="section-body" id="bodyO4"></div>
+    </div>
+  </div>
+
+  <!-- Thank You -->
+  <div id="pageDone" class="hidden">
+    <div class="thankyou">
+      <div class="check">✅</div>
+      <h2 id="tyTitle">Thank you!</h2>
+      <p id="tyMsg">Your response has been recorded. Your Excel file has been downloaded automatically.</p>
+      <button class="btn btn-gold" onclick="downloadExcel()" id="tyBtn">⬇ Download Again</button>
+    </div>
+  </div>
+</div>
+
+<!-- Fixed navigation -->
+<div class="nav-area" id="navArea">
+  <div class="nav-left">
+    <button class="btn btn-secondary hidden" id="btnPrev" onclick="goPrev()">← <span id="btnPrevLbl">Back</span></button>
+    <div class="step-info" id="stepInfo"></div>
+  </div>
+  <div>
+    <button class="btn btn-primary" id="btnNext" onclick="goNext()"><span id="btnNextLbl">Start Survey</span> →</button>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+
+const choices = {
+  yi1gu94: [
+    {v:'state_university__internal', en:'State university (internal) Student', si:'රාජ්‍ය විශ්වවිද්‍යාල (අභ්‍යන්තර) විද්‍යාර්ථියෙක්', ta:'அரச பல்கலைக்கழக (உள்வாரி) மாணவர்'},
+    {v:'external_affiliated', en:'State – External/Affiliated Student', si:'රාජ්‍ය විශ්වවිද්‍යාල- බාහිර/අනුබද්ධ විද්‍යාර්ථියෙක්', ta:'அரச பல்கலைக்கழக வெளிவாரி / அதனோடு இணைந்த மாணவர்'},
+    {v:'postgraduate', en:'Non-state (TNE/Private) Student', si:'රාජ්‍ය නොවන (අන්තර්ජාතීය අධ්‍යාපන/පෞද්ගලික) විද්‍යාර්ථියෙක්', ta:'அரச சார்பற்ற (தனியார் / பன்னாட்டுக்கல்வி) மாணவர்'},
+    {v:'graduate_alumnus', en:'Postgraduate (State/Non-state) Student', si:'පශ්චාද් උපාධි විද්‍යාර්ථියෙක්', ta:'பட்டப்பின் படிப்பு (அரச / அரச சார்பற்ற) மாணவர்'},
+    {v:'employer_industry', en:'Employer / Industry / Entrepreneur', si:'සේවායෝජකයෙක්/කර්මාන්තකරුවෙක්/ව්‍යවසායකයෙක්', ta:'தொழில்தருநர் / கைத்தொழில் / தொழில் முனைவோர்'},
+    {v:'academic_administrative_staff', en:'Academic Staff Member', si:'අධ්‍යයන කාර්ය මණ්ඩල සාමාජිකයෙක්', ta:'கல்விசார் ஊழியர்'},
+    {v:'executive_non_academic_staff', en:'Executive / Non-Academic Staff', si:'විධායක/අනධ්‍යයන කාර්ය මණ්ඩල සාමාජිකයෙක්', ta:'நிறைவேற்று / கல்விசாரா ஊழியர்'},
+    {v:'non_state_hei_tne_provider', en:'Non-state HEI / TNE Provider', si:'රාජ්‍ය නොවන උසස් අධ්‍යාපන ආයතන/අන්තර්ජාතීය අධ්‍යාපන සැපයුම්කරුවෙක්', ta:'அரச சார்பற்ற உயர்கல்வி / பன்னாட்டுக்கல்வி வழங்குநர்'},
+    {v:'professional_body_regulator_1', en:'Professional Body / Regulator', si:'වෘත්තීය ආයතන/නියාමක ආයතන', ta:'தொழில்வாண்மைக்குழு / ஒழுங்கமைப்பாளர்'},
+    {v:'graduate_alumnus_a', en:'Graduate / Alumnus/a', si:'උපාධිධාරී/ආදි විද්‍යාර්ථි', ta:'பட்டதாரி / மேனால் பட்டதாரி மாணவர்'},
+    {v:'general_public', en:'General Public', si:'පොදු ජනතාව', ta:'பொதுப்பிரசை'},
+  ],
+  mode: [
+    {v:'in_person', en:'In-person', si:'පෞද්ගලිකව', ta:'நேரடியாக'},
+    {v:'online_blended', en:'Online / Blended', si:'මාර්ගගත/මිශ්‍රිත', ta:'நிகழ்நிலை / நேரடி மற்றும் நிகழ்நிலை இரண்டும் கலந்து'},
+    {v:'odl', en:'Open & Distance Learning (ODL)', si:'විවෘත හා දූරස්ථ ඉගැනුම', ta:'திறந்த மற்றும் தொலைநோக்குக் கல்வி'},
+  ],
+  age_s: [
+    {v:'18_20', en:'18–20', si:'18–20', ta:'18–20'},
+    {v:'21_23', en:'21–23', si:'21–23', ta:'21–23'},
+    {v:'24_26', en:'24–26', si:'24–26', ta:'24–26'},
+    {v:'27', en:'27–30', si:'27+', ta:'27–30'},
+    {v:'31_35', en:'31–35', si:'31–35', ta:'31–35'},
+    {v:'35', en:'35+', si:'35+', ta:'35+'},
+  ],
+  age_o: [
+    {v:'18_30', en:'18–30', si:'18–30', ta:'18–30'},
+    {v:'31_45', en:'31–45', si:'31–45', ta:'31–45'},
+    {v:'46_60', en:'46–60', si:'45–60', ta:'46–60'},
+    {v:'60', en:'60+', si:'60+', ta:'60+'},
+  ],
+  gender: [
+    {v:'male', en:'Male', si:'පුරුෂ', ta:'ஆண்'},
+    {v:'female', en:'Female', si:'ස්ත්‍රී', ta:'பெண்'},
+    {v:'non_binary', en:'Non-binary', si:'ස්ත්‍රී හෝ පුරුෂ නොවන', ta:'இரண்டும் அல்ல'},
+    {v:'pns', en:'Prefer not to say', si:'සඳහන් කිරීමට අභිමත් නොවේ', ta:'கூற விரும்பவில்லை'},
+    {v:'self_describe', en:'Prefer to self-describe', si:'පෞද්ගලික මතය අනුව නිර්වචනය කිරීමට අභිමත්', ta:'சுயமாக விபரிப்புடன் கூற விரும்புகின்றேன்'},
+  ],
+  yn: [
+    {v:'yes', en:'Yes', si:'ඔව්', ta:'ஆம்'},
+    {v:'no', en:'No', si:'නැත', ta:'இல்லை'},
+  ],
+  yn_pns: [
+    {v:'yes', en:'Yes', si:'ඔව්', ta:'ஆம்'},
+    {v:'no', en:'No', si:'නැත', ta:'இல்லை'},
+    {v:'pns', en:'Prefer not to say', si:'සඳහන් කිරීමට අභිමත් නොවේ', ta:'கூற விரும்பவில்லை'},
+  ],
+  school_type: [
+    {v:'national', en:'National', si:'ජාතික', ta:'தேசிய'},
+    {v:'provincial', en:'Provincial', si:'පළාත්', ta:'மாகாண'},
+    {v:'international', en:'International', si:'ජාත්‍යන්තර', ta:'சர்வதேச'},
+    {v:'private', en:'Private / Semi-Government', si:'පෞද්ගලික/අර්ධ රාජ්‍ය', ta:'தனியார் / அரச - அரச சார்பற்ற'},
+    {v:'pirivena', en:'Pirivena', si:'පිරිවෙණ', ta:'பிரிதவனா'},
+    {v:'other', en:'Other', si:'වෙනත්', ta:'வேறு'},
+  ],
+  vp_ex: [
+    {v:'very_poor', en:'Very Poor', si:'ඉතා දුර්වල යි', ta:'மிகவும் குறைவானது'},
+    {v:'poor', en:'Poor', si:'දුර්වල යි', ta:'குறைவானது'},
+    {v:'average', en:'Average', si:'සාමාන්‍ය යි', ta:'சராசரியானது'},
+    {v:'good', en:'Good', si:'හොඳ යි', ta:'நல்லது'},
+    {v:'excellent', en:'Excellent', si:'විශිෂ්ට යි', ta:'மிகவும் நல்லது'},
+  ],
+  vp_vg: [
+    {v:'very_poor', en:'Very Poor', si:'ඉතා දුර්වල යි', ta:'மிகவும் குறைவானது'},
+    {v:'poor', en:'Poor', si:'දුර්වල යි', ta:'குறைவானது'},
+    {v:'average', en:'Average', si:'සාමාන්‍ය යි', ta:'சராசரி'},
+    {v:'good', en:'Good', si:'හොඳ යි', ta:'நல்லது'},
+    {v:'very_good', en:'Very Good', si:'ඉතා හොඳ යි', ta:'மிகவும் நல்லது'},
+  ],
+  fully: [
+    {v:'fully', en:'Fully', si:'සම්පූර්ණයෙන් ම', ta:'முழுமையாக'},
+    {v:'mostly', en:'Mostly', si:'බොහෝ දුරට', ta:'பெரும்பாலும்'},
+    {v:'somewhat', en:'Somewhat', si:'තරමක්', ta:'ஓரளவிற்கு'},
+    {v:'not_really', en:'Not really', si:'එතරම් නැත', ta:'உண்மையில் இல்லை'},
+    {v:'not_at_all', en:'Not at all', si:'කෙසේ වත් නැත', ta:'முற்றிலும் இல்லை'},
+  ],
+  yes_somewhat_no: [
+    {v:'yes', en:'Yes', si:'ඔව්', ta:'ஆம்'},
+    {v:'somewhat', en:'Somewhat', si:'තරමක් දුරට', ta:'ஓரளவிற்கு'},
+    {v:'no', en:'No', si:'නැத', ta:'இல்லை'},
+  ],
+  confidence: [
+    {v:'not_confident', en:'Not confident', si:'විශ්වාසයක් නැත', ta:'நம்பிக்கையில்லை'},
+    {v:'somewhat', en:'Somewhat Confident', si:'තරමක විශ්වාසයක් ඇත', ta:'ஓரளவு நம்பிக்கை உள்ளது'},
+    {v:'confident', en:'Confident', si:'විශ්වාසයක් ඇත', ta:'நம்பிக்கை உள்ளது'},
+    {v:'very_confident', en:'Very Confident', si:'ඉහළ විශ්වාසයක් ඇත', ta:'மிகவும் நம்பிக்கை உள்ளது'},
+  ],
+  scale5: [
+    {v:'1', en:'1', si:'1', ta:'1'},
+    {v:'2', en:'2', si:'2', ta:'2'},
+    {v:'3', en:'3', si:'3', ta:'3'},
+    {v:'4', en:'4', si:'4', ta:'4'},
+    {v:'5', en:'5', si:'5', ta:'5'},
+  ],
+};
+
+const studentTypes = ['state_university__internal','external_affiliated','postgraduate','graduate_alumnus'];
+
+const UI = {
+  en: {
+    start: 'Start Survey', next: 'Next', prev: 'Back', submit: 'Submit & Download Excel',
+    step: 'Step', of: 'of', required_err: 'This field is required.',
+    ty_title: 'Thank you for your response!',
+    ty_msg: 'Your response has been saved to our database. A copy has also been downloaded to your device.',
+    ty_btn: '⬇ Download Again',
+    mohe: 'Ministry of Higher Education · Sri Lanka',
+    survey_title: 'National Higher Education Policy Survey',
+    meta_time: '10–15 minutes', meta_anon: 'Anonymous', meta_lang: '3 languages available',
+    w_intro: 'The Ministry of Higher Education (MOHE) is developing a National Higher Education Policy to build a high-quality, inclusive, and future-ready education system in Sri Lanka. Your views and experiences as a student, graduate, employer, academic, or member of the public are essential to shape policies that ensure our graduates are skilled, employable, and globally competitive.',
+    w_note: 'This anonymous survey takes about <strong>10–15 minutes</strong> and will help identify key priorities and reforms. Thank you for contributing to the future of higher education in Sri Lanka.',
+    s0: 'Who are you?', q0: 'Identify yourself – you are',
+    sS1:'Profile', sS2:'Access, Preparation & Financial Situation',
+    sS3:'Current Experience', sS4:'Graduate Aspirations & Employability',
+    sS5:'Curriculum Gaps & Suggestions',
+    sO1:'Your Profile', sO2:'Assessment of Graduates',
+    sO3:'Policy Recommendations & National Priorities', sO4:'Suggestions & Comments',
+  },
+  si: {
+    start: 'සමීක්ෂණය ආරම්භ කරන්න', next: 'ඊළඟ', prev: 'ආපසු', submit: 'ඉදිරිපත් කර Excel ගොනුව බාගත් කරගන්න',
+    step: 'පියවර', of: 'න්', required_err: 'මෙම ක්ෂේත්‍රය අවශ්‍ය වේ.',
+    ty_title: 'ස්තූතියි!', ty_msg: 'ඔබේ ප්‍රතිචාරය සටහන් කොට පිටපතක් ඔබේ උපාංගයට ද බාගත් කරන ලදී.',
+    ty_btn: '⬇ නැවත බාගත් කරන්න',
+    mohe: 'උසස් අධ්‍යාපන අමාත්‍යාංශය · ශ්‍රී ලංකාව',
+    survey_title: 'ජාතික උසස් අධ්‍යාපන ප්‍රතිපත්ති සමීක්ෂණය',
+    meta_time: 'මිනිත්තු 10–15', meta_anon: 'නිර්නාමික', meta_lang: 'භාෂා 3ක්',
+    w_intro: 'උසස් අධ්‍යාපන අමාත්‍යාංශය (MOHE) ශ්‍රී ලංකාවෙහි උසස් තත්ත්වයේ, අන්තර්ගතකරණ සහ අනාගතයට සූදානම් අධ්‍යාපන ක්‍රමයක් ගොඩනැගීම සඳහා ජාතික උසස් අධ්‍යාපන ප්‍රතිපත්තියක් සකස් කරමින් සිටී. අපේ උපාධිධාරීන් දක්ෂ, රැකියා කළ හැකි සහ ගෝලීය වශයෙන් තරඟකාරී පිරිසක් බවට සහතික කරන ප්‍රතිපත්ති සකස් කිරීම සඳහා විද්‍යාර්ථියකු, උපාධිධාරියකු, සේවා යෝජකයකු, විද්වතකු හෝ පුරවැසියකු ලෙස ඔබේ අදහස් සහ අත්දැකීම් අත්‍යවශ්‍ය වේ.',
+    w_note: 'මෙම නිර්නාමික සමීක්ෂණය සඳහා <strong>මිනිත්තු 10–15</strong>ක් ගත් වේ. ශ්‍රී ලංකාවේ උසස් අධ්‍යාපනයේ අනාගතය සඳහා දායක වීම පිළිබඳ ඔබට ස්තූතියි.',
+    s0: 'ඔබ හඳුනාගන්න', q0: 'ඔබ හඳුනාගන්න',
+    sS1:'අ. මූලික තොරතුරු', sS2:'ආ. ප්‍රවේශය, සූදානම සහ මූල්‍ය තත්ත්වය',
+    sS3:'ඇ. වර්තමාන අත්දැකීම්', sS4:'ඈ. උපාධිධාරී අපේක්ෂා සහ රැකියා නියුක්තිය',
+    sS5:'ඉ. විෂයමාලා හිඩැස් සහ යෝජනා',
+    sO1:'අ. ඔබේ මූලික තොරතුරු', sO2:'ආ. උපාධිධාරීන් තක්සේරු කිරීම',
+    sO3:'ඇ. ප්‍රතිපත්ති නිර්දේශ සහ ජාතික ප්‍රමුඛතා', sO4:'ඈ. යෝජනා සහ අදහස්',
+  },
+  ta: {
+    start: 'கணக்கெடுப்பை தொடங்குங்கள்', next: 'அடுத்து', prev: 'திரும்பு', submit: 'சமர்ப்பி & Excel பதிவிறக்கவும்',
+    step: 'படி', of: '/', required_err: 'இந்த புலம் தேவையானது.',
+    ty_title: 'நன்றிகள்!', ty_msg: 'உங்கள் பதில் பதிவாகியது. ஒரு நகல் உங்கள் சாதனத்திலும் பதிவிறக்கம் செய்யப்பட்டது.',
+    ty_btn: '⬇ மீண்டும் பதிவிறக்கவும்',
+    mohe: 'உயர் கல்வி அமைச்சு, இலங்கை',
+    survey_title: 'தேசிய உயர்கல்விக் கொள்கை கணக்கெடுப்பு',
+    meta_time: '10–15 நிமிடங்கள்', meta_anon: 'பெயர் வெளிப்படுத்தப்படாதது', meta_lang: '3 மொழிகள்',
+    w_intro: 'இலங்கை முழுவதும் உயர்தரமான, மற்றும் அனைத்தையும் உள்ளடக்கிய வகையில் எதிர்காலத்திற்கு ஏற்றதொரு கல்வி முறையை கட்டமைப்பதற்காக உயர்கல்வி அமைச்சு (MOHE) ஒரு தேசிய உயர்கல்விக் கொள்கையை உருவாக்கி வருகின்றது. எமது பட்டதாரிகள் திறமையானவர்களாகவும், வேலைவாய்ப்புகளுக்குத் தகுதியானவர்களாகவும், உலகளாவிய ரீதியில் போட்டித்தன்மை உடையவர்களாகவும் இருப்பதனை உறுதிசெய்யும் கொள்கைகளை வடிவமைப்பதற்கு, ஒரு மாணவர், பட்டதாரி, தொழில்தருநர், கல்விசார் ஊழியர் அல்லது பொதுப்பிரசை என்றவகையில் தங்களின் கருத்துகளும் அனுபவங்களும் இங்கு இன்றியமையாதவை.',
+    w_note: 'பெயர் வெளிப்படுத்தப்படாத இக்கணக்கெடுப்பிற்கு ஏறக்குறைய <strong>10–15 நிமிடங்கள்</strong> வரை தங்களுக்கு நேரம் எடுப்பதோடு, இந்த ஆய்வானது முக்கிய முன்னுரிமைகளையும் சீர்திருத்தங்களையும் கண்டறிய உதவுகின்றது. இலங்கை உயர்கல்வியின் எதிர்காலத்திற்கு தாங்கள் வழங்கும் இப்பங்களிப்பிற்கு நன்றிகள்!',
+    s0: 'நீங்கள் யார்?', q0: 'தங்களை அடையாளப்படுத்துக - நீங்கள் ஒரு,',
+    sS1:'அ உங்கள் சுயவிபரம்', sS2:'ஆ அணுகல், தயார்ப்படுத்தல் நிதிநிலைமை',
+    sS3:'இ தற்போதைய அனுபவம்', sS4:'ஈ பட்டதாரி அபிலாசைகள் மற்றும் வேலைவாய்ப்புத் திறன்',
+    sS5:'உ குறைபாடுகள் மற்றும் பரிந்துரைகள்',
+    sO1:'அ சுயவிபரம்', sO2:'ஆ பட்டதாரிகள் தொடர்பான கணிப்பீடு',
+    sO3:'இ கொள்கைசார் பரிந்துரைகள் மற்றும் தேசிய முன்னுரிமைகள்', sO4:'ஈ பரிந்துரைகள் மற்றும் கருத்துகள்',
+  }
+};
+
+// ============================================================
+// STATE
+// ============================================================
+let lang = 'en';
+let respondentType = null;
+let isStudent = false;
+let currentStep = -1; // -1=welcome, 0=identify, 1..N=sections
+let answers = {};
+
+const studentPages = ['pageS1','pageS2','pageS3','pageS4','pageS5'];
+const otherPages = ['pageO1','pageO2','pageO3','pageO4'];
+
+// ============================================================
+// LANGUAGE
+// ============================================================
+function setLang(l) {
+  lang = l;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.lang-btn').forEach(b => { if(b.textContent.includes(l==='en'?'En':l==='si'?'ිං':'த')) b.classList.add('active'); });
+  // easier: match by index
+  const btns = document.querySelectorAll('.lang-btn');
+  btns[0].classList.toggle('active', l==='en');
+  btns[1].classList.toggle('active', l==='si');
+  btns[2].classList.toggle('active', l==='ta');
+
+  updateUITexts();
+  renderCurrentPage();
+}
+
+function t(key) { return UI[lang][key] || UI.en[key] || key; }
+function tq(q, field) { return (q && (q[lang+'_'+field] || q[field])) || ''; }
+function tc(c) { return c[lang] || c.en; }
+
+function updateUITexts() {
+  const u = UI[lang];
+  document.getElementById('hdr-mohe').textContent = u.mohe;
+  document.getElementById('hdr-title').textContent = u.survey_title;
+  document.getElementById('wMohe').textContent = u.mohe;
+  document.getElementById('wTitle').innerHTML = u.survey_title;
+  document.getElementById('wIntro').textContent = u.w_intro;
+  document.getElementById('wNote').innerHTML = u.w_note;
+  document.getElementById('metaTime').textContent = u.meta_time;
+  document.getElementById('metaAnon').textContent = u.meta_anon;
+  document.getElementById('metaLang').textContent = u.meta_lang;
+  document.getElementById('s0title').textContent = u.s0;
+  document.getElementById('q0label').textContent = u.q0;
+  ['sS1','sS2','sS3','sS4','sS5','sO1','sO2','sO3','sO4'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.textContent = u[id];
+  });
+  document.getElementById('tyTitle').textContent = u.ty_title;
+  document.getElementById('tyMsg').textContent = u.ty_msg;
+  document.getElementById('tyBtn').textContent = u.ty_btn;
+  document.getElementById('btnPrevLbl').textContent = u.prev;
+  const nextEl = document.getElementById('btnNextLbl');
+  if(currentStep === -1) nextEl.textContent = u.start;
+  else if(isLastStep()) nextEl.textContent = u.submit;
+  else nextEl.textContent = u.next;
+}
+
+// ============================================================
+// TEXT HELPERS
+// ============================================================
+function L(en, si, ta) { return {en, si, ta}; }
+function lbl(o) { return o[lang] || o.en; }
+
+// ============================================================
+// QUESTION BUILDER HELPERS
+// ============================================================
+let qCounter = 0;
+function uid() { return 'q_' + (++qCounter); }
+
+function renderText(id, label, required, hint, rows) {
+  const req = required ? '<span class="req">*</span>' : '';
+  const hintHtml = hint ? `<div class="question-hint">${hint}</div>` : '';
+  const inp = rows > 1
+    ? `<textarea id="${id}" name="${id}" rows="${rows||3}" ${required?'required':''}></textarea>`
+    : `<input type="text" id="${id}" name="${id}" ${required?'required':''}>`;
+  return `<div class="question-group">
+    <div class="question-label">${label}${req}</div>
+    ${hintHtml}${inp}
+  </div>`;
+}
+
+function renderSelect(id, label, list, required, multiple) {
+  const req = required ? '<span class="req">*</span>' : '';
+  const opts = (choices[list] || []).map(c => {
+    const inputType = multiple ? 'checkbox' : 'radio';
+    return `<div class="option-btn">
+      <input type="${inputType}" id="${id}_${c.v}" name="${id}" value="${c.v}">
+      <label for="${id}_${c.v}">${c[lang]||c.en}</label>
+    </div>`;
+  }).join('');
+  return `<div class="question-group">
+    <div class="question-label">${label}${req}</div>
+    <div class="options-grid">${opts}</div>
+  </div>`;
+}
+
+function renderRatingRow(id, label, list) {
+  const opts = (choices[list] || choices.vp_ex).map(c =>
+    `<div class="rating-option">
+      <input type="radio" id="${id}_${c.v}" name="${id}" value="${c.v}">
+      <label for="${id}_${c.v}">${c[lang]||c.en}</label>
+    </div>`
+  ).join('');
+  return `<div class="rating-row">
+    <div class="rating-label">${label}</div>
+    <div class="rating-options">${opts}</div>
+  </div>`;
+}
+
+function renderRatingBlock(sectionLabel, rows) {
+  const headers = rows[0] ? (choices[rows[0].list] || choices.vp_ex).map(c =>
+    `<div class="scale-label">${c[lang]||c.en}</div>`
+  ).join('') : '';
+  const rowsHtml = rows.map(r => renderRatingRow(r.id, r.label, r.list||'vp_ex')).join('');
+  return `<div class="question-group">
+    <div class="q-note">${sectionLabel}</div>
+    <div class="rating-scale-header">
+      <div class="label-spacer"></div>
+      <div class="scale-labels">${headers}</div>
+    </div>
+    ${rowsHtml}
+  </div>`;
+}
+
+function renderSuggestions(baseId, mainLabel, mainRequired, subs, subLabel) {
+  const mainReq = mainRequired ? '<span class="req">*</span>' : '';
+  const subsHtml = subs.map((s, i) =>
+    `<div class="suggestion-field">
+      <div class="suggestion-num">${i+1}</div>
+      <input type="text" id="${s}" name="${s}" placeholder="${subLabel} ${i+1}">
+    </div>`
+  ).join('');
+  return `<div class="question-group">
+    <div class="question-label">${mainLabel}${mainReq}</div>
+    <div class="suggestion-fields">${subsHtml}</div>
+  </div>`;
+}
+
+// ============================================================
+// SECTION RENDERERS
+// ============================================================
+function renderS1() {
+  const l = lang;
+  const Q = {
+    name: L('1. Name (Optional)','1. නම (අනිවාර්ය නොවේ)','1. பெயர் (விருப்பமாயின்)'),
+    email: L('2. Email Address (Optional, for follow-up)','2. විදුත්ත තැපැල් ලිපිනය (අනිවාර්ය නොවේ)','2. மின்னஞ்சல் ( விருப்பமாயின், உங்களைத் தொடர்புகொள்வதற்கு)'),
+    uni: L('3. University / Institute','3. විශ්වවිද්‍යාලය/ආයතනය','3. பல்கலைக்கழகம் / நிறுவனம்'),
+    faculty: L('4. Faculty and Discipline','4. පීඨය සහ අධ්‍යයන අංශය','4. பீடம் மற்றும் துறை'),
+    year: L('5. Year of Study','5. ඉගෙනගන්නා වර්ෂය','5. கற்கும் வருடம்'),
+    mode: L('6. Mode(s) of Study','6. ඉගැනීම් ස්වරූපය','6. கல்வி கற்கும் வடிவம்'),
+    prov: L('7. Province / District','7. පළාත්/දිස්ත්‍රික්කය','7. மாகாணம் / மாவட்டம்'),
+    age: L('8. Age','8. වයස','8. வயது'),
+    gender: L('9. Gender','9. ස්ත්‍රී පුරුෂ භාවය','9. பால்நிலை'),
+    disability: L('10. Do you identify as a student with a disability or long-term condition?','10. ඔබ, ආබාධිත හෝ දිගුකාලීන රෝග තත්ත්වයක් ඇති විද්‍යාර්ථියකු වශයෙන් තමන් හඳුනාගන්නෙහි ද?','10. நீங்கள் நீண்டகால உடல் நலக் குறைபாடு அல்லது இயலாமையுள்ள மாணවராக உங்களை அடையாளப்படுத்துகின்றீர்களா?'),
+    disSpec: L('If yes, please specify.','පිළිතුර ඔව් නම්, ආබාධය හෝ රෝග තත්ත්වය සඳහන් කරන්න.','ஆம் எனில் தயவு செய்து விபரிக்கவும்'),
+    school: L('11. What type of school did you attend before university?','11. විශ්වවිද්‍යාලයට ප්‍රවේශ වීමට පෙර ඔබ ගියේ කුමන ආකාරයේ පාසලකට ද?','11. பல்கலைக்கழகத்திற்கு நுழைய முன்னர், நீங்கள் எந்த வகையான பாடசாலையில் கல்வி கற்றிருந்தீர்கள்?'),
+    firstGen: L('12. Are you the first person in your family to attend university?','12. ඔබේ පවුලෙන් විශ්වවිද්‍යාල ප්‍රවේශය ලැබූ පළමු වැනි තැනැත්තා ඔබ ද?','12. உங்கள் குடும்பத்தில் பல்கலைக்கழகம் செல்லும் முதலாவது நபர் நீங்களா?'),
+    minority: L('13. Do you identify as belonging to a minority group (ethnic, religious, linguistic, or other)?','13. ඔබ සුළුතර කණ්ඩායමකට (වාර්ගික, ආගමික, භාෂාමය හෝ වෙනත්) අයත් යැයි හඳුනාගන්නෙහි ද?','13. நீங்கள் ஒரு சிறுபான்மைக் குழுவைச் (இனம், மதம், மொழி அல்லது பிற) சேர்ந்தவரா?'),
+    minSpec: L('If yes, please specify.','පිළිතුර ඔව් නම්, එය පිළිබඳ විස්තර දක්වන්න.','ஆம் எனில் தயவு செய்து விபரிக்கவும்'),
+  };
+
+  const disOpts = choices.yn_pns.map(c =>
+    `<div class="option-btn"><input type="radio" id="disability_${c.v}" name="disability" value="${c.v}">
+     <label for="disability_${c.v}">${c[lang]||c.en}</label></div>`
+  ).join('');
+  const schoolOpts = choices.school_type.map(c =>
+    `<div class="option-btn"><input type="radio" id="school_type_${c.v}" name="school_type" value="${c.v}">
+     <label for="school_type_${c.v}">${c[lang]||c.en}</label></div>`
+  ).join('');
+  const firstOpts = choices.yn.map(c =>
+    `<div class="option-btn"><input type="radio" id="first_gen_${c.v}" name="first_gen" value="${c.v}">
+     <label for="first_gen_${c.v}">${c[lang]||c.en}</label></div>`
+  ).join('');
+  const minOpts = choices.yn_pns.map(c =>
+    `<div class="option-btn"><input type="radio" id="minority_${c.v}" name="minority" value="${c.v}">
+     <label for="minority_${c.v}">${c[lang]||c.en}</label></div>`
+  ).join('');
+  const modeOpts = choices.mode.map(c =>
+    `<div class="option-btn"><input type="checkbox" id="mode_${c.v}" name="mode" value="${c.v}">
+     <label for="mode_${c.v}">${c[lang]||c.en}</label></div>`
+  ).join('');
+  const ageOpts = choices.age_s.map(c =>
+    `<div class="option-btn"><input type="radio" id="age_s_${c.v}" name="age_s" value="${c.v}">
+     <label for="age_s_${c.v}">${c[lang]||c.en}</label></div>`
+  ).join('');
+  const genderOpts = choices.gender.map(c =>
+    `<div class="option-btn"><input type="radio" id="gender_s_${c.v}" name="gender_s" value="${c.v}">
+     <label for="gender_s_${c.v}">${c[lang]||c.en}</label></div>`
+  ).join('');
+
+  document.getElementById('bodyS1').innerHTML = `
+    <div class="question-group"><div class="question-label">${lbl(Q.name)}</div><input type="text" id="name_s" name="name_s"></div>
+    <div class="question-group"><div class="question-label">${lbl(Q.email)}</div><input type="email" id="email_s" name="email_s"></div>
+    <div class="question-group"><div class="question-label">${lbl(Q.uni)} <span class="req">*</span></div><input type="text" id="uni_s" name="uni_s" required></div>
+    <div class="question-group"><div class="question-label">${lbl(Q.faculty)} <span class="req">*</span></div><input type="text" id="faculty_s" name="faculty_s" required></div>
+    <div class="question-group"><div class="question-label">${lbl(Q.year)} <span class="req">*</span></div><input type="text" id="year_s" name="year_s" required></div>
+    <div class="question-group"><div class="question-label">${lbl(Q.mode)}</div><div class="options-grid">${modeOpts}</div></div>
+    <div class="question-group"><div class="question-label">${lbl(Q.prov)}</div><input type="text" id="prov_s" name="prov_s"></div>
+    <div class="question-group"><div class="question-label">${lbl(Q.age)}</div><div class="options-grid">${ageOpts}</div></div>
+    <div class="question-group"><div class="question-label">${lbl(Q.gender)}</div><div class="options-grid">${genderOpts}</div></div>
+    <div class="question-group">
+      <div class="question-label">${lbl(Q.disability)}</div>
+      <div class="options-grid" id="disOpts">${disOpts}</div>
+      <div class="cond-question" id="disSpecWrap" style="margin-top:12px;">
+        <div class="question-label" style="font-size:0.88rem;">${lbl(Q.disSpec)}</div>
+        <input type="text" id="dis_spec" name="dis_spec">
+      </div>
+    </div>
+    <div class="question-group"><div class="question-label">${lbl(Q.school)}</div><div class="options-grid">${schoolOpts}</div></div>
+    <div class="question-group"><div class="question-label">${lbl(Q.firstGen)}</div><div class="options-grid">${firstOpts}</div></div>
+    <div class="question-group">
+      <div class="question-label">${lbl(Q.minority)}</div>
+      <div class="options-grid">${minOpts}</div>
+      <div class="cond-question" id="minSpecWrap" style="margin-top:12px;">
+        <div class="question-label" style="font-size:0.88rem;">${lbl(Q.minSpec)}</div>
+        <input type="text" id="min_spec" name="min_spec">
+      </div>
+    </div>`;
+
+  // Conditional listeners
+  document.querySelectorAll('[name="disability"]').forEach(r => {
+    r.addEventListener('change', () => {
+      document.getElementById('disSpecWrap').classList.toggle('visible', r.value==='yes' && r.checked);
+    });
+  });
+  document.querySelectorAll('[name="minority"]').forEach(r => {
+    r.addEventListener('change', () => {
+      document.getElementById('minSpecWrap').classList.toggle('visible', r.value==='yes' && r.checked);
+    });
+  });
+}
+
+function renderS2() {
+  const Q = {
+    q14: L('14. Before entering university, did you feel adequately prepared for higher education? Why or why not?','14. විශ්වවිද්‍යාලයට ප්‍රවේශ වීමට පෙර, උසස් අධ්‍යාපනය සඳහා ප්‍රමාණවත් ලෙස සූදානම් බවක් ඔබට දැනුණේ ද? එසේ සූදානම් බවක් දැනීමට හෝ නොදැනීමට හේතු දක්වන්න.','14. பல்கலைக்கழகத்தில் சேர்வதற்கு முன்பு, உயர்கல்விக்கு நீங்கள் போதுமானளவு தயாராக இருப்பதாக உணர்ந்தீர்களா? ஏன் அல்லது ஏன் இல்லை?'),
+    q15: L('15. Do you think access to higher education in Sri Lanka is equitable for students from all backgrounds? Why or why not?','15. ශ්‍රී ලංකාවේ උසස් අධ්‍යාපනය සඳහා ප්‍රවේශය සෑම පසුබිමක ම සිසුන් සඳහා සාධාරණ ව පවතින්නේ යැයි ඔබ සිතන්නෙහි ද?','15. இலங்கையில் அனைத்துப் பின்னணிகளைச் சேர்ந்த மாணவர்களுக்கும் உயர்கல்விக்கான அணுகல் சமமானதாக இருப்பதாக நீங்கள் கருதுகின்றீர்களா? ஏன் அல்லது ஏன் இல்லை?'),
+    q16: L('16. Have you / your parents taken any loans to support your studies?','16. ඔබේ අධ්‍යයන කටයුතු සඳහා ඔබ/ඔබේ දෙමාපියන් ණය මුදලක් ලබාගෙන තිබේ ද?','16. உங்கள் கல்விக்கு ஆதரவாக நீங்கள் / உங்களின் பெற்றோர் ஏதேனும் கடன் வசதிகளைப்பெற்றுள்ளீர்களா?'),
+    q16b: L('If Yes, please describe your experience in obtaining the loan.','පිළිතුර ඔව් නම්, ඔබේ අත්දැකීම විස්තර කරන්න.','ஆம் எனில், தயவுசெய்து கடன் பெறுவதில் உங்கள் அனுபவத்தை விபரிக்கவும்'),
+    qFS: L('Are you currently receiving any form of financial support from the university, the government, or any other party?','ඔබ දැනට විශ්වවිද්‍යාලයෙන්, රජයෙන් හෝ වෙනත් පාර්ශ්වයකින් මූල්‍ය ආධාරයක් ලබා ගන්නෙහි ද?','நீங்கள் தற்போது பல்கலைக்கழகம், அரசாங்கம் அல்லது வேறு ஏதேனும் தரப்பினரிடமிருந்து நிதியுதவி பெறுகின்றீர்களா?'),
+    qFSspec: L('If yes, please specify.','ඔව් නම්, කරුණාකර සඳහන් කරන්න.','ஆம் எனில் தயவு செய்து விபரிக்கவும்'),
+    q17: L('17. Did you work while studying?','17. අධ්‍යාපනය ලබන අතරතුර දී ඔබ රැකියාවක නිරත වූවෙහි ද?','17. நீங்கள் கல்வி கற்கும்போது வேலை செய்தீர்களா?'),
+    q17b: L('If Yes, what kind of work and why?','පිළිතුර ඔව් නම්, රැකියාවේ ස්වභාවය සහ එහි නිරත වීමට හේතු දක්වන්න.','ஆம் எனில், என்ன வகையான வேலை மற்றும் ஏன்?'),
+    q18: L('18. On average, what were your monthly living expenses as a student (LKR)?','18. සාමාන්‍යයෙන්, විද්‍යාර්ථියකු ලෙස ඔබේ මාසික ජීවන වියදම් (ශ්‍රී ලංකා මුදලින්) කොපමණ ද?','18. ஒரு மாணவராக உங்கள் மாதாந்த சராசரி வாழ்க்கைச் செலவு (இலங்கை ரூபாயில்) எவ்வளவாக இருந்தது?'),
+    q19: L('19. Did you have caregiving responsibilities while studying? Please describe briefly.','19. අධ්‍යාපනය ලබන අතරතුර දී ඔබට රැකබලා ගැනීමේ වගකීම් (දරුවන්, සහෝදර සහෝදරියන්, දෙමාපියන් හෝ වෙනත් අය) පැවතිණේ ද? කෙටියෙන් විස්තර දක්වන්න.','19. நீங்கள் கல்வி கற்கும்போது உங்களுக்கு பராமரிப்புசார் பொறுப்புகள் (குழந்தைகள், உடன்பிறப்புகள், பெற்றோர்) இருந்தனவா? தயவுசெய்து சுருக்கமாக விபரிக்கவும்.'),
+  };
+
+  const loanOpts = choices.yn.map(c=>
+    `<div class="option-btn"><input type="radio" id="loan_${c.v}" name="loan" value="${c.v}"><label for="loan_${c.v}">${c[lang]||c.en}</label></div>`
+  ).join('');
+  const fsOpts = choices.yn.map(c=>
+    `<div class="option-btn"><input type="radio" id="fin_support_${c.v}" name="fin_support" value="${c.v}"><label for="fin_support_${c.v}">${c[lang]||c.en}</label></div>`
+  ).join('');
+  const workOpts = choices.yn.map(c=>
+    `<div class="option-btn"><input type="radio" id="work_s_${c.v}" name="work_s" value="${c.v}"><label for="work_s_${c.v}">${c[lang]||c.en}</label></div>`
+  ).join('');
+
+  document.getElementById('bodyS2').innerHTML = `
+    <div class="question-group"><div class="question-label">${lbl(Q.q14)}</div><textarea id="q14" name="q14" rows="3"></textarea></div>
+    <div class="question-group"><div class="question-label">${lbl(Q.q15)}</div><textarea id="q15" name="q15" rows="3"></textarea></div>
+    <div class="question-group">
+      <div class="question-label">${lbl(Q.q16)}</div>
+      <div class="options-grid">${loanOpts}</div>
+      <div class="cond-question" id="loanExpWrap" style="margin-top:12px;">
+        <div class="question-label" style="font-size:0.88rem;">${lbl(Q.q16b)}</div>
+        <textarea id="loan_exp" name="loan_exp" rows="2"></textarea>
+      </div>
+    </div>
+    <div class="question-group">
+      <div class="question-label">${lbl(Q.qFS)}</div>
+      <div class="options-grid">${fsOpts}</div>
+      <div class="cond-question" id="fsSpecWrap" style="margin-top:12px;">
+        <div class="question-label" style="font-size:0.88rem;">${lbl(Q.qFSspec)}</div>
+        <input type="text" id="fin_support_spec" name="fin_support_spec">
+      </div>
+    </div>
+    <div class="question-group">
+      <div class="question-label">${lbl(Q.q17)}</div>
+      <div class="options-grid">${workOpts}</div>
+      <div class="cond-question" id="workWrap" style="margin-top:12px;">
+        <div class="question-label" style="font-size:0.88rem;">${lbl(Q.q17b)}</div>
+        <input type="text" id="work_detail" name="work_detail">
+      </div>
+    </div>
+    <div class="question-group"><div class="question-label">${lbl(Q.q18)}</div><input type="number" id="q18" name="q18" placeholder="LKR"></div>
+    <div class="question-group"><div class="question-label">${lbl(Q.q19)}</div><textarea id="q19" name="q19" rows="2"></textarea></div>`;
+
+  document.querySelectorAll('[name="loan"]').forEach(r=>r.addEventListener('change',()=>{
+    document.getElementById('loanExpWrap').classList.toggle('visible', r.value==='yes'&&r.checked);
+  }));
+  document.querySelectorAll('[name="fin_support"]').forEach(r=>r.addEventListener('change',()=>{
+    document.getElementById('fsSpecWrap').classList.toggle('visible', r.value==='yes'&&r.checked);
+  }));
+  document.querySelectorAll('[name="work_s"]').forEach(r=>r.addEventListener('change',()=>{
+    document.getElementById('workWrap').classList.toggle('visible', r.value==='yes'&&r.checked);
+  }));
+}
+
+function renderS3() {
+  const Q = {
+    note20: L('20. Rate your current experience (1=Very poor, 5=Excellent)','20. ඔබේ වර්තමාන අත්දැකීම් ශ්‍රේණිගත කරන්න (1=ඉතා දුර්වල යි, 5=විශිෂ්ට යි)','20. தற்போதைய அனுபவத்தை மதிப்பிடுக. (1=மிகவும் குறைவானது, 5= மிகவும் நல்லது)'),
+    r1: L('Curriculum relevance to work/industry','රැකියා/කර්මාන්ත සඳහා විෂයමාලා අදාළබව','கலைத்திட்டம் பணி மற்றும் தொழில்துறையோடு தொடர்புடையது'),
+    r2: L('Teaching-learning methods (labs, fieldwork, etc.)','ඉගැන්වීම්-ඉගැනුම් ක්‍රම (විද්‍යාගාර, ක්ෂේත්‍රකාර්ය ආදි)','கற்றல் - கற்பித்தல் முறை (ஆய்வுகூடம், களஆய்வு முதலியன)'),
+    r3: L('Assessment fairness & workload balance','ඇගයීම් සාධාරණත්වය සහ කාර්ය සම්භාර තුලනය','கணிப்பீட்டின் நியாயத்தன்மை மற்றும் பணிச்சுமைச் சமநிலை'),
+    r4: L('Amount of workload','කාර්ය සම්භාර ප්‍රමාණය','பணிச்சுமையின் அளவு'),
+    r5: L('Internship / Work-Integrated Learning (WIL)','වෘත්තීය පුහුණුව/වෘත්තීය-සංකලන ඉගැනුම් (WIL) ප්‍රවේශය','உள்ளகப்பயிற்சி மற்றும் தொழிலுடன் இணைந்த கற்றல்'),
+    r6: L('English Language support','ඉංග්‍රීසි භාෂා සහාය','ஆங்கில மொழிக்கான ஆதரவு'),
+    r7: L('Soft skills support (Communication, Teamwork, etc.)','මෘදු කුසලතා සහාය (සන්නිවේදනය, කණ්ඩායම්ගත කාර්ය ආදි)','மென்திறன்களுக்கான ஆதரவு (தொடர்பாடல், இணைந்து பணியாற்றல் முதலியன)'),
+    r8: L('Basic IT skills development support','මූලික තොරතුරු තාක්ෂණ කුසලතා සංවර්ධන සහාය','அடிப்படைத் தகவல் தொழில்நுட்பத் திறன் விருத்திக்கான ஆதரவு'),
+    r9: L('Research & inquiry skills development','පර්යේෂණ සහ විමර්ශන කුසලතා සංවර්ධනය','ஆய்வு மற்றும் விசாரணைத்திறன் மேம்பாடு'),
+    r10: L('Digital / online learning quality','ඩිජිටල්/මාර්ගගත ඉගැනුම් ගුණාත්මකභාවය','டிஜிட்டல் (எண்ணிம) மற்றும் நிகழ்நிலைக் கற்றல் தரம்'),
+    r11: L('Library, labs, Wi-Fi & learning spaces','පුස්තකාල/විද්‍යාගාර, Wi-Fi සහ ඉගැනුම් අවකාශ','நூலகம், ஆய்வுகூடம், Wi-Fi (அருகலை) மற்றும் கற்றலுக்கான சூழல்'),
+    r12: L('Academic advising & career guidance','අධ්‍යයන උපදේශනය සහ වෘත්තීය මාර්ගෝපදේශනය','கல்விசார் ஆலோசனைகள் மற்றும் தொழில் வழிகாட்டல்'),
+    r13: L('Counselling / mental-health services','උපදේශන/මානසික සෞඛ්‍ය සේවා','உளவளத்துணை மற்றும் மனநல சேவைகள்'),
+    r14: L('Campus safety & anti-ragging climate','විශ්වවිද්‍යාලයීය පරිසර ආරක්ෂාව සහ නවකවද විරෝධී පරිසරය','பல்கலைக்கழகப் பாதுகாப்பு மற்றும் பகிடிவதையற்ற சூழல்'),
+    r15: L('Disability accommodations & accessibility','ආබාධිත අනුකූලනය සහ ප්‍රවේශ්‍යතාව','மாற்றுத்திறனாளிகளுக்கான அணுகல்கள் மற்றும் வசதிகள்'),
+    q21: L('21. Did your initial expectations match the reality?','21. ඔබේ මුල් අපේක්ෂාවන් යථාර්ථය සමඟ ගැළපුණේ ද?','21. உங்கள் ஆரம்ப எதிர்பார்ப்புகள் யதார்த்தத்துடன் பொருந்தியுள்ளனவா?'),
+    q22: L('22. Have internships, workshops, clubs, community service, research, entrepreneurship support met your expectations?','22. වෘත්තීය පුහුණු, වැඩමුළු, සංගම්, ප්‍රජා සේවය, පර්යේෂණ, ව්‍යවසායකත්ව සහාය ඔබේ අපේක්ෂාවන් සපුරාලූවේ ද?','22. உள்ளகப் பயிற்சிகள், பயிற்சிப்பட்டறைகள், கழகங்கள், சமூக சேவைகள், ஆய்வுகள், தொழில்முனைவோர் ஆதரவு ஆகியவை உங்கள் எதிர்பார்ப்புகளைப் பூர்த்தி செய்தனவா?'),
+    q23: L('23. Have you faced discrimination or bias within the university (gender, ethnicity, language, class, or other)? If yes, please explain.','23. ඔබ විශ්වවිද්‍යාලයේ දී වෙනස්කමකට හෝ පක්ෂග්‍රාහීත්වයකට (ස්ත්‍රී පුරුෂ භාවය, ජනවාර්ගිකත්වය, භාෂාව, පන්තිය හෝ වෙනත් සාධකයක් පදනම්ව) මුහුණ දී තිබේ ද?','23. பல்கலைக்கழகத்திற்குள் நீங்கள் பாகுபாடு அல்லது பாரபட்சரீதியாக எவற்றையேனும் (பாலினம், இனம், மொழி, வர்க்கம் அல்லது பிற) எதிர்கொண்டீர்களா? ஆம் எனில், தயவுசெய்து விளக்கவும்.'),
+    q24: L('24. How would you describe your overall wellbeing and mental health during university?','24. විශ්වවිද්‍යාල කාලයේ දී ඔබේ සමස්ත යහපැවැත්ම සහ මානසික සෞඛ්‍යය ඔබ විස්තර කරන්නේ කෙසේ ද?','24. பல்கலைக்கழகக் காலத்தில் நீங்கள் உங்களின் ஒட்டுமொத்த நல்வாழ்கவயும் மனநலத்தையும் எவ்வாறு விபரிப்பீர்கள்?'),
+    q25: L('25. Were counselling or well-being services easily available and effective?','25. උපදේශන හෝ ශුභසාධන සේවා පහසුවෙන් ලබා ගත් හැකි සහ ඵලදායී ස්වභාවයක පවතී ද?','25. உளவளத்துணை அல்லது நல்வாழ்வு சேவைகள் எளிதில் கிடைக்கக்கூடியதாகவும் பயனுள்ளதாகவும் இருந்தனவா?'),
+    q26: L('26. What are the main difficulties you currently face (or faced) while studying? (Up to 3)','26. ඔබ ඉගෙනීමේ දී දැනට මුහුණ දෙන (හෝ මුහුණ දුන්) ප්‍රධාන දුෂ්කරතා (3ක් දක්වා) කවරේ ද?','26. உங்கள் கற்றல் காலத்தில், நீங்கள் தற்போது எதிர்கொள்ளும் (அல்லது எதிர்கொண்ட) முக்கிய சிரமங்கள் யாவை? (3 வரை)'),
+    q27: L('27. What kind of additional support (academic, psychological, financial, career) would have improved your experience?','27. කවර ආකාරයේ අමතර සහයෝගයක් (අධ්‍යයන, මනෝවිද්‍යාත්මක, මූල්‍ය, වෘත්තීය) මඟින් ඔබේ අත්දැකීම් වැඩිදියුණු කිරීමට හැකි වනු ඇති ද?','27. உங்கள் அனுபவத்தை மேம்படுத்துவதற்காக எவ்வகையான மேலதிக ஆதரவு (கல்வி, உளவியல், நிதி, தொழில்) தேவைப்பட்டிருக்கும்?'),
+  };
+
+  const ratingRows = [
+    {id:'r_content', label:lbl(Q.r1), list:'vp_ex'},
+    {id:'r_teaching', label:lbl(Q.r2), list:'vp_ex'},
+    {id:'r_assess', label:lbl(Q.r3), list:'vp_ex'},
+    {id:'r_workload', label:lbl(Q.r4), list:'vp_ex'},
+    {id:'r_intern', label:lbl(Q.r5), list:'vp_ex'},
+    {id:'r_english', label:lbl(Q.r6), list:'vp_ex'},
+    {id:'r_soft', label:lbl(Q.r7), list:'vp_ex'},
+    {id:'r_it', label:lbl(Q.r8), list:'vp_ex'},
+    {id:'r_research', label:lbl(Q.r9), list:'vp_ex'},
+    {id:'r_digital', label:lbl(Q.r10), list:'vp_ex'},
+    {id:'r_library', label:lbl(Q.r11), list:'vp_ex'},
+    {id:'r_advising', label:lbl(Q.r12), list:'vp_ex'},
+    {id:'r_counsel', label:lbl(Q.r13), list:'vp_ex'},
+    {id:'r_safety', label:lbl(Q.r14), list:'vp_ex'},
+    {id:'r_disability', label:lbl(Q.r15), list:'vp_ex'},
+  ];
+
+  const ratingRowsHtml = ratingRows.map(r => {
+    const opts = choices.vp_ex.map(c=>
+      `<div class="rating-option"><input type="radio" id="${r.id}_${c.v}" name="${r.id}" value="${c.v}"><label for="${r.id}_${c.v}">${c[lang]||c.en}</label></div>`
+    ).join('');
+    return `<div class="rating-row"><div class="rating-label">${r.label}</div><div class="rating-options">${opts}</div></div>`;
+  }).join('');
+
+  const scaleHdr = choices.vp_ex.map(c=>`<div class="scale-label">${c[lang]||c.en}</div>`).join('');
+  const q21Opts = choices.fully.map(c=>
+    `<div class="option-btn"><input type="radio" id="q21_${c.v}" name="q21" value="${c.v}"><label for="q21_${c.v}">${c[lang]||c.en}</label></div>`
+  ).join('');
+  const q22Opts = choices.fully.map(c=>
+    `<div class="option-btn"><input type="radio" id="q22_${c.v}" name="q22" value="${c.v}"><label for="q22_${c.v}">${c[lang]||c.en}</label></div>`
+  ).join('');
+  const q24Opts = choices.vp_vg.map(c=>
+    `<div class="option-btn"><input type="radio" id="q24_${c.v}" name="q24" value="${c.v}"><label for="q24_${c.v}">${c[lang]||c.en}</label></div>`
+  ).join('');
+  const q25Opts = choices.yes_somewhat_no.map(c=>
+    `<div class="option-btn"><input type="radio" id="q25_${c.v}" name="q25" value="${c.v}"><label for="q25_${c.v}">${c[lang]||c.en}</label></div>`
+  ).join('');
+
+  document.getElementById('bodyS3').innerHTML = `
+    <div class="question-group">
+      <div class="q-note">${lbl(Q.note20)}</div>
+      <div class="rating-scale-header">
+        <div class="label-spacer"></div>
+        <div class="scale-labels">${scaleHdr}</div>
+      </div>
+      ${ratingRowsHtml}
+    </div>
+    <div class="question-group"><div class="question-label">${lbl(Q.q21)}</div><div class="options-grid">${q21Opts}</div></div>
+    <div class="question-group"><div class="question-label">${lbl(Q.q22)}</div><div class="options-grid">${q22Opts}</div></div>
+    <div class="question-group"><div class="question-label">${lbl(Q.q23)}</div><textarea id="q23" name="q23" rows="3"></textarea></div>
+    <div class="question-group"><div class="question-label">${lbl(Q.q24)}</div><div class="options-grid">${q24Opts}</div></div>
+    <div class="question-group"><div class="question-label">${lbl(Q.q25)}</div><div class="options-grid">${q25Opts}</div></div>
+    <div class="question-group"><div class="question-label">${lbl(Q.q26)}</div><textarea id="q26" name="q26" rows="3"></textarea></div>
+    <div class="question-group"><div class="question-label">${lbl(Q.q27)}</div><textarea id="q27" name="q27" rows="3"></textarea></div>`;
+}
+
+function renderS4() {
+  const Q = {
+    q28: L('28. What was your primary aspiration when you first enrolled at university?','28. ප්‍රථමයෙන් විශ්වවිද්‍යාලයට ප්‍රවේශ වන විට ඔබේ ප්‍රධාන අභිලාෂය කුමක් වූවේ ද?','28. நீங்கள் முதன்முதலில் பல்கலைக்கழகத்திற்குள் நுழைந்த போது உங்கள் முதன்மையான அபிலாசை (பேரார்வம்) என்னவாக இருந்தது?'),
+    q29: L('29. Do you feel your university education helps you achieve that aspiration? Why or why not?','29. ඔබේ විශ්වවිද්‍යාලයීය අධ්‍යාපනය එම අභිලාෂයන් සාක්ෂාත් කරගැනීමට උපකාරී වන බව ඔබ සිතන්නෙහි ද? පිළිතුර සඳහා හේතු දක්වන්න.','29. உங்கள் பல்கலைக்கழகக் கல்வி அந்த அபிலாசையை அடைய உதவுகிறது என்று நீங்கள் கருதுகிறீர்களா? ஏன் அல்லது ஏன் இல்லை?'),
+    q30: L('30. How confident are you about finding suitable employment after graduation?','30. උපාධිය ලැබීමෙන් පසු සුදුසු රැකියාවක් සොයාගැනීම පිළිබඳ ව ඔබට කෙතරම් විශ්වාසයක් තිබේ ද?','30. பல்கலைக்கழகக் கல்விக்குப் பின்னர், பொருத்தமான வேலைவாய்ப்பைப் பெறுவதில் நீங்கள் எவ்வளவு நம்பிக்கையுடன் இருக்கிறீர்கள்?'),
+    q31: L('31. Would you consider pursuing further studies in Sri Lanka or abroad? Why?','31. ඔබ ශ්‍රී ලංකාවේ හෝ විදේශයක වැඩිදුර අධ්‍යාපනය හැදෑරීමට සලකා බලන්නෙහි ද? පිළිතුර සඳහා හේතු දක්වන්න.','31. இலங்கையிலோ அல்லது வெளிநாட்டிலோ பட்டப்பின்படிப்பினைத் தொடர விரும்புவீர்களா? ஏன்?'),
+    q32: L('32. What is your biggest worry related to your education or future career?','32. ඔබේ අධ්‍යාපනය හෝ අනාගත වෘත්තිය සම්බන්ධයෙන් ඔබට ඇති ප්‍රබල ම කනස්සල්ල කුමක් ද?','32. உங்கள் கல்வி அல்லது எதிர்காலத் தொழில் தொடர்பான உங்களின் மிகப்பெரிய கவலை என்ன?'),
+    q33: L('33. In your opinion, what can be done to address these issues?','33. ඔබේ මතය අනුව, මෙම ගැටලු විසඳීමට කළ හැක්කේ කුමක් ද?','33. உங்கள் கருத்துப்படி, இந்தச் சிக்கல்களைத் தீர்ப்பதற்கு என்ன செய்யலாம்?'),
+  };
+
+  const q30Opts = choices.confidence.map(c=>
+    `<div class="option-btn"><input type="radio" id="q30_${c.v}" name="q30" value="${c.v}"><label for="q30_${c.v}">${c[lang]||c.en}</label></div>`
+  ).join('');
+
+  document.getElementById('bodyS4').innerHTML = `
+    <div class="question-group"><div class="question-label">${lbl(Q.q28)}</div><textarea id="q28" name="q28" rows="3"></textarea></div>
+    <div class="question-group"><div class="question-label">${lbl(Q.q29)}</div><textarea id="q29" name="q29" rows="3"></textarea></div>
+    <div class="question-group"><div class="question-label">${lbl(Q.q30)}</div><div class="options-grid">${q30Opts}</div></div>
+    <div class="question-group"><div class="question-label">${lbl(Q.q31)}</div><textarea id="q31" name="q31" rows="2"></textarea></div>
+    <div class="question-group"><div class="question-label">${lbl(Q.q32)}</div><textarea id="q32" name="q32" rows="2"></textarea></div>
+    <div class="question-group"><div class="question-label">${lbl(Q.q33)}</div><textarea id="q33" name="q33" rows="2"></textarea></div>`;
+}
+
+function renderS5() {
+  const Q = {
+    q34: L('34. Identified Gaps in Curriculum (list up to 5)','34. විෂයමාලාවේ හඳුනාගැනෙන ඌනතා (5ක් දක්වා)','34. கலைத்திட்டத்தில் கண்டறியப்பட்ட குறைபாடுகள் (5 வரை பட்டியலிடவும்)'),
+    q34b: L('Proposal to Address each Gap','ඌනතාව ආමන්ත්‍රණය කිරීමේ යෝජනාවලිය','ஒவ்வொரு இடைவெளியையும் நிவர்த்தி செய்வதற்கான முன்மொழிவுகள்'),
+    q35: L('35. What should be INCLUDED to develop work-ready graduates? (Up to 5)','35. වෘත්තීය ලෝකය සඳහා සූදානම් උපාධිධාරීන් සංවර්ධනය කිරීමට ඇතුළත් කළ යුත්තේ කුමක් ද? (5ක් දක්වා)','35. தொழில்துறைக்குத் தயாரான பட்டதாரிகளை உருவாக்குவதற்கு என்னென்ன உள்ளடக்கப்பட வேண்டும்? (5 வரை)'),
+    q35b: L('What should be EXCLUDED? (Up to 3)','බැහැර කළ යුත්තේ මොනවාද? (3 දක்வා)','எவற்றை விலக்க வேண்டும்? (3 வரை)'),
+    q36: L('36. Any other suggestions for improving higher education?','36. උසස් අධ්‍යාපනය වැඩිදියුණු කිරීම සඳහා වෙනත් යෝජනා තිබේ ද?','36. ஏதேனும் பிற பரிந்துரைகள் உள்ளனவா?'),
+    gap: L('Gap','ඌනතාව','இடைவெளி'),
+    proposal: L('Proposal','යෝජනාව','முன்மொழிவு'),
+    include: L('Include','ඇතුළත් කිරීම','உள்ளடக்கல்'),
+    exclude: L('Exclude','බැහැර කිරීම','விலக்கல்'),
+  };
+
+  const gapFields = [1,2,3,4,5].map(i=>
+    `<div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;">
+      <div style="min-width:28px;text-align:center;font-size:0.8rem;font-weight:600;color:var(--gold);padding-top:10px;">${i}</div>
+      <input type="text" id="gap${i}" name="gap${i}" placeholder="${lbl(Q.gap)} ${i}">
+    </div>`
+  ).join('');
+  const proposalFields = [1,2,3,4,5].map(i=>
+    `<div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;">
+      <div style="min-width:28px;text-align:center;font-size:0.8rem;font-weight:600;color:var(--navy);padding-top:10px;">${i}</div>
+      <input type="text" id="proposal${i}" name="proposal${i}" placeholder="${lbl(Q.proposal)} ${i}">
+    </div>`
+  ).join('');
+  const includeFields = [1,2,3,4,5].map(i=>
+    `<div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;">
+      <div style="min-width:28px;text-align:center;font-size:0.8rem;font-weight:600;color:var(--gold);padding-top:10px;">${i}</div>
+      <input type="text" id="include${i}" name="include${i}" placeholder="${lbl(Q.include)} ${i}">
+    </div>`
+  ).join('');
+  const excludeFields = [1,2,3].map(i=>
+    `<div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;">
+      <div style="min-width:28px;text-align:center;font-size:0.8rem;font-weight:600;color:var(--required);padding-top:10px;">${i}</div>
+      <input type="text" id="exclude${i}" name="exclude${i}" placeholder="${lbl(Q.exclude)} ${i}">
+    </div>`
+  ).join('');
+
+  document.getElementById('bodyS5').innerHTML = `
+    <div class="question-group">
+      <div class="question-label">${lbl(Q.q34)}</div>${gapFields}
+    </div>
+    <div class="question-group">
+      <div class="question-label">${lbl(Q.q34b)}</div>${proposalFields}
+    </div>
+    <div class="question-group">
+      <div class="question-label">${lbl(Q.q35)}</div>${includeFields}
+    </div>
+    <div class="question-group">
+      <div class="question-label">${lbl(Q.q35b)}</div>${excludeFields}
+    </div>
+    <div class="question-group"><div class="question-label">${lbl(Q.q36)}</div><textarea id="q36" name="q36" rows="3"></textarea></div>`;
+}
+
+function renderO1() {
+  const Q = {
+    name: L('1. Name (Optional)','1. නම (අනිවාර්ය නොවේ)','1. பெயர் (விருப்பமாயின்)'),
+    age: L('2. Age','2. වයස','2. வயது'),
+    gender: L('3. Gender','3. ස්ත්‍රී පුරුෂ භාවය','3. பால்நிலை'),
+    job: L('4. Current Job Title / Designation','4. දැනට දරන රැකියා තනතුර','4. தற்போதைய பதவியின் பெயர்/ தொழில்'),
+    prov: L('5. Province / District','5. පළාත්/දිස්ත්‍රික්කය','5. மாகாணம் / மாவட்டம்'),
+  };
+  const ageOpts = choices.age_o.map(c=>
+    `<div class="option-btn"><input type="radio" id="age_o_${c.v}" name="age_o" value="${c.v}"><label for="age_o_${c.v}">${c[lang]||c.en}</label></div>`
+  ).join('');
+  const genderOpts = choices.gender.map(c=>
+    `<div class="option-btn"><input type="radio" id="gender_o_${c.v}" name="gender_o" value="${c.v}"><label for="gender_o_${c.v}">${c[lang]||c.en}</label></div>`
+  ).join('');
+
+  document.getElementById('bodyO1').innerHTML = `
+    <div class="note-box">${lang==='si'?'අ. ඔබේ මූලික තොරතුරු':lang==='ta'?'பகுதி A: உங்கள் சுயவிவரம்':'Section A: Your Profile'}</div>
+    <div class="question-group"><div class="question-label">${lbl(Q.name)}</div><input type="text" id="name_o" name="name_o"></div>
+    <div class="question-group"><div class="question-label">${lbl(Q.age)}</div><div class="options-grid">${ageOpts}</div></div>
+    <div class="question-group"><div class="question-label">${lbl(Q.gender)}</div><div class="options-grid">${genderOpts}</div></div>
+    <div class="question-group"><div class="question-label">${lbl(Q.job)}</div><input type="text" id="job_o" name="job_o"></div>
+    <div class="question-group"><div class="question-label">${lbl(Q.prov)}</div><input type="text" id="prov_o" name="prov_o"></div>`;
+}
+
+function renderO2() {
+  const Q = {
+    secB: L('Section B: Your Assessment of Graduates','B කොටස: උපාධිධාරීන් පිළිබඳ ඔබේ තක්සේරුව','பகுதி B: பட்டதாரிகளுக்கான உங்கள் மதிப்பீடு'),
+    q5: L('5. Current Knowledge Level of Graduates (1–5):','5. උපාධිධාරීන්ගේ වර්තමාන දැනුම මට්ටම (1–5):','5. பட்டதாரிகளின் தற்போதைய அறிவுநிலை'),
+    q6note: L('6. Skill Development in Graduates – Rate the following (1=Not Developed, 5=Highly Developed):','6. උපාධිධාරීන්ගේ කුසලතා සංවර්ධනය (1=වර්ධනය නොවූ, 5=ඉතා ඉහළ):','6. பட்டதாரிகளிடம் திறன் மேம்பாடு - (பின்வரும் முறையில் மதிப்பிடுக: 1= மேம்படவில்லை, 5 = மிகவும் மேம்பட்டது):'),
+    comm: L('Communication Skills','සන්නිවේදන කුසලතා','தொடர்பாடல் திறன்'),
+    digital: L('Digital & Tech Proficiency','ඩිජිටල් සහ තාක්ෂණ ප්‍රවීණතාව','டிஜிட்டல் (எண்ணிம) மற்றும் தொழில்நுட்பவியல் திறன்'),
+    teamwork: L('Teamwork & Collaboration','කණ්ඩායම් කාර්ය සහ සහයෝගීතාව','இணைந்து பணியாற்றல் மற்றும் ஒருங்கிணைவு'),
+    adapt: L('Adaptability & Lifelong Learning','අනුවර්තනය වීමේ හැකියාව සහ යාවජීව ඉගැනුම','ஏற்புத்திறன் மற்றும் வாழ்நாள் கற்றல்'),
+    q6bNote: L('6b. Your Top Priority for Undergraduates (Rate importance: 1=Low, 5=High):','6ආ. උපාධි අපේක්ෂකයන් සඳහා ඔබේ ඉහළ ම ප්‍රමුඛතාව (1=පහළ 5=ඉහළ):','6 ஆ. பல்கலைக்கழக உள்வாரி மாணவர்களுக்கான உங்களின் தொழில் முன்னுரிமை (முக்கியத்துவத்தை மதிப்பிடுக: 1= குறைவு, 2=அதிகம்):'),
+    know: L('Knowledge (core mastery, interdisciplinary understanding)','දැනුම (මූලික ප්‍රවීණතාව, අන්තශ්ශික්ෂණීය අවබෝධය)','அறிவு (அடிப்படைத் திறன்களில் தேர்ச்சி, பல்துறைசார்புரிதல்)'),
+    skills: L('Skills (practical, technical, soft skills)','කුසලතා (ප්‍රායෝගික, තාක්ෂණික, මෘදු කුසලතා)','திறன்கள் (நடைமுறை, தொழில்நுட்ப மென்திறன்கள்)'),
+    attitudes: L('Attitudes (professionalism, ethics, global mindset)','ආකල්ප (වෘත්තීයභාවය, ආචාර ධර්ම, ගෝලීය මානසිකත්වය)','மனப்பான்மைகள் (தொழில்முறைப் பண்பு, ஒழுக்கம், உலகளாவிய மனப்பான்மை)'),
+    q7: L('7. Apart from professional and technical skills, what personal or intellectual qualities do you most value in graduates?','7. වෘත්තීය සහ තාක්ෂණික කුසලතා හැරුණු විට, උපාධිධාරීන් සූ වන, ඔබ වඩාත් අගය කරන පෞද්ගලික හෝ බුද්ධිමය ගුණාංග කවරේ ද?','7. தொழில்முறை மற்றும் தொழில் நுட்பத்திறன்களைத் தவிர, பட்டதாரிகளிடம் நீங்கள் மிகவும் மதிக்கும் தனிப்பட்ட அல்லது அறிவுசார் குணங்கள் யாவை?'),
+    q8: L('8. How well do current graduates demonstrate these qualities, and what changes in teaching/curriculum could strengthen them?','8. වර්තමාන උපාධිධාරීන් මෙම ගුණාංග කෙතරම් හොඳින් පෙන්නුම් කරන්නේ ද යන්නත්, ඉගැන්වීම්/විෂයමාලාවේ කවර වෙනස්කම් මඟින් ඒවා ශක්තිමත් කළ හැකි ද යන්නත් දක්වන්න.','8. தற்போதைய பட்டதாரிகள் இந்தப் பண்புகளை எந்தளவிற்கு வெளிப்படுத்துகின்றார்கள்? மேலும் கற்பித்தல் / கலைத்திட்டத்தில் என்ன மாற்றங்கள் அவற்றை வலுப்படுத்தக்கூடும்?'),
+    q9: L('9. Do you think graduates currently have enough opportunities during their studies to question, innovate, or create?','9. උපාධිධාරීන්ට තම අධ්‍යයන අතරතුර දී ප්‍රශ්න කිරීමට, නවෝත්පාදනය කිරීමට හෝ නිර්මාණය කිරීමට ප්‍රමාණවත් අවස්ථා තිබේ යැයි ඔබ සිතන්නෙහි ද?','9. பட்டதாரிகள் தாம் கல்வி கற்றுக்கொண்டிருக்கும் காலத்தில் வினாக்களை எழுப்பவும், புதுமைகளைப் புகுத்தவும், அல்லது உருவாக்கவும் தற்போது போதுமான வாய்ப்புகள் இருப்பதாக நீங்கள் கருதுகின்றீர்களா?'),
+    q10: L('10. What specific changes in university teaching, assessment, or learning environments could better encourage creativity and independent thinking?','10. නිර්මාණශීලීත්වය සහ ස්වාධීන චින්තනය වඩාත් හොඳින් දිරිමත් කළ හැකි වන්නේ විශ්වවිද්‍යාලයීය ඉගැන්වීම්, ඇගයීම් හෝ ඉගෙනුම් පරිසරයන්හි කවර නිශ්චිත වෙනස්කම් මඟින් ද?','10. படைப்பாற்றலையும் சுயசிந்தனையையும் சிறப்பாக ஊக்குவிப்பதற்காக, பல்கலைக்கழகக் கற்பித்தல், மதிப்பீடு அல்லது கற்றல் சூழல்களில் என்னென்ன குறிப்பிட்ட மாற்றங்களைச் செய்ய வேண்டும்?'),
+  };
+
+  const q5Opts = choices.scale5.map(c=>
+    `<div class="option-btn"><input type="radio" id="know_level_${c.v}" name="know_level" value="${c.v}"><label for="know_level_${c.v}">${c[lang]||c.en}</label></div>`
+  ).join('');
+
+  const skillRows = [
+    {id:'skill_comm', label:lbl(Q.comm)},
+    {id:'skill_digital', label:lbl(Q.digital)},
+    {id:'skill_team', label:lbl(Q.teamwork)},
+    {id:'skill_adapt', label:lbl(Q.adapt)},
+  ];
+  const prioRows = [
+    {id:'prio_know', label:lbl(Q.know)},
+    {id:'prio_skills', label:lbl(Q.skills)},
+    {id:'prio_att', label:lbl(Q.attitudes)},
+  ];
+
+  const renderRatingGroup = (rows) => {
+    const scaleHdr = choices.scale5.map(c=>`<div class="scale-label">${c[lang]||c.en}</div>`).join('');
+    const rowsHtml = rows.map(r => {
+      const opts = choices.scale5.map(c=>
+        `<div class="rating-option"><input type="radio" id="${r.id}_${c.v}" name="${r.id}" value="${c.v}"><label for="${r.id}_${c.v}">${c[lang]||c.en}</label></div>`
+      ).join('');
+      return `<div class="rating-row"><div class="rating-label">${r.label}</div><div class="rating-options">${opts}</div></div>`;
+    }).join('');
+    return `<div class="rating-scale-header">
+      <div class="label-spacer"></div><div class="scale-labels">${scaleHdr}</div>
+    </div>${rowsHtml}`;
+  };
+
+  document.getElementById('bodyO2').innerHTML = `
+    <div class="note-box">${lbl(Q.secB)}</div>
+    <div class="question-group"><div class="question-label">${lbl(Q.q5)}</div><div class="options-grid">${q5Opts}</div></div>
+    <div class="question-group">
+      <div class="q-note">${lbl(Q.q6note)}</div>
+      ${renderRatingGroup(skillRows)}
+    </div>
+    <div class="question-group">
+      <div class="q-note">${lbl(Q.q6bNote)}</div>
+      ${renderRatingGroup(prioRows)}
+    </div>
+    <div class="question-group"><div class="question-label">${lbl(Q.q7)}</div><textarea id="o_q7" name="o_q7" rows="3"></textarea></div>
+    <div class="question-group"><div class="question-label">${lbl(Q.q8)}</div><textarea id="o_q8" name="o_q8" rows="3"></textarea></div>
+    <div class="question-group"><div class="question-label">${lbl(Q.q9)}</div><textarea id="o_q9" name="o_q9" rows="3"></textarea></div>
+    <div class="question-group"><div class="question-label">${lbl(Q.q10)}</div><textarea id="o_q10" name="o_q10" rows="3"></textarea></div>`;
+}
+
+function renderO3() {
+  const Q = {
+    secC: L('Section C: Policy Recommendations','C කොටස: ප්‍රතිපත්ති නිර්දේශ','பகுதி C: கொள்கை பரிந்துரைகள்'),
+    q11: L('11. What structural or policy changes could encourage universities to recognise alternative career paths?','11. විකල්ප වෘත්තීය මාර්ග හඳුනාගැනීමට විශ්වවිද්‍යාල දිරිගැන්විය හැකි ව්‍යූහාත්මක හෝ ප්‍රතිපත්තිමය වෙනස්කම් කවරේ ද?','11. மாற்றுத் தொழில் பாதைகளை அங்கீகரிக்க பல்கலைக்கழகங்களை ஊக்குவிக்கக்கூடிய கட்டமைப்பு அல்லது கொள்கை மாற்றங்கள் யாவை?'),
+    q12: L('12. What policy changes could help universities produce graduates who contribute equally to Sri Lanka\'s social, cultural, environmental and economic wellbeing?','12. ශ්‍රී ලංකාවේ සමාජීය, සාංස්කෘතික, පාරිසරික සහ ආර්ථික යහපැවැත්මට සමාන ව දායක වන උපාධිධාරීන් උත්පාදනය කිරීමට විශ්වවිද්‍යාල සඳහා උපකාර කළ හැකි ප්‍රතිපත්තිමය වෙනස්කම් කවරේ ද?','12. இலங்கையின் சமூக, பண்பாட்டு, சுற்றுச்சூழல் மற்றும் பொருளாதார நல்வாழ்வுக்குச் சமமாகப் பங்களிப்புச் செய்யும் பட்டதாரிகளை உருவாக்குவதற்கு, பல்கலைக்கழகங்களுக்கு என்ன கொள்கை மாற்றங்கள் உதவக்கூடும்?'),
+    secPrio: L('13. Rate these national priorities (1=Low priority, 5=High priority):','13. මෙම ජාතික ප්‍රමුඛතා ශ්‍රේණිගත කරන්න (1=පහළ, 5=ඉහළ):','13. இந்தத் தேசிய முன்னுரிமைகளை மதிப்பிடுக. (1=குறைந்த முன்னுரிமை, 5= அதிக முன்னுரிமை):'),
+    p1: L('Access to higher education','ප්‍රවේශය සහ ආසන','உயர்கல்விக்கான அணுகல்'),
+    p2: L('Quality Assurance & accreditation','තත්ත්ව ආරක්ෂණය සහ ප්‍රත්‍යායනය','தர உறுதி மற்றும் அங்கீகாரம்'),
+    p3: L('Curriculum & skills','විෂයමාලාව සහ කුසලතා','பாடத்திட்டம் மற்றும் திறன்கள்'),
+    p4: L('Research & innovation','පර්යේෂණ සහ නවෝත්පාදන','ஆய்வு மற்றும் புத்தாக்கம்'),
+    p5: L('Staff capacity & retention','කාර්ය මණ්ඩල ධාරිතාව සහ රඳවාගැනීම','ஊழியர்கொள்ளளவாற்றல் மற்றும் தக்கவைப்பு'),
+    p6: L('Digital & ODL','ඩිජිටල් සහ විවෘත සහ දූරස්ථ ඉගැනුම','டிஜிட்டல் (எண்ணிம) மற்றும் திறந்த, தொலைநோக்குக் கல்வி'),
+    p7: L('TNE & internationalisation','අන්තර්ජාතීය අධ්‍යාපනය සහ ජාත්‍යන්තරකරණය','பன்னாட்டுக்கல்வி மற்றும் சர்வதேசமயமாக்கம்'),
+    p8: L('Student welfare & safety','ශිෂ්‍ය ශුභසාධනය සහ ආරක්ෂාව','மாணவர்நலன்புரி மற்றும் பாதுகாப்பு'),
+    p9: L('Infrastructure','යටිතල පහසුකම්','உட்கட்டமைப்பு'),
+    sug: L('Suggestion','යෝජනාව','பரிந்துரை'),
+  };
+
+  const q11fields = [1,2,3,4].map(i=>
+    `<div style="display:flex;gap:8px;margin-bottom:8px;"><div style="min-width:28px;text-align:center;font-size:0.8rem;font-weight:600;color:var(--gold);padding-top:10px;">${i}</div>
+     <input type="text" id="o_q11_${i}" name="o_q11_${i}" placeholder="${lbl(Q.sug)} ${i}"></div>`
+  ).join('');
+  const q12fields = [1,2,3,4].map(i=>
+    `<div style="display:flex;gap:8px;margin-bottom:8px;"><div style="min-width:28px;text-align:center;font-size:0.8rem;font-weight:600;color:var(--gold);padding-top:10px;">${i}</div>
+     <input type="text" id="o_q12_${i}" name="o_q12_${i}" placeholder="${lbl(Q.sug)} ${i}"></div>`
+  ).join('');
+
+  const prioItems = [
+    {id:'prio_access', label:lbl(Q.p1)},
+    {id:'prio_qa', label:lbl(Q.p2)},
+    {id:'prio_curr', label:lbl(Q.p3)},
+    {id:'prio_research', label:lbl(Q.p4)},
+    {id:'prio_staff', label:lbl(Q.p5)},
+    {id:'prio_digital', label:lbl(Q.p6)},
+    {id:'prio_tne', label:lbl(Q.p7)},
+    {id:'prio_welfare', label:lbl(Q.p8)},
+    {id:'prio_infra', label:lbl(Q.p9)},
+  ];
+  const scaleHdr = choices.scale5.map(c=>`<div class="scale-label">${c[lang]||c.en}</div>`).join('');
+  const prioRowsHtml = prioItems.map(r => {
+    const opts = choices.scale5.map(c=>
+      `<div class="rating-option"><input type="radio" id="${r.id}_${c.v}" name="${r.id}" value="${c.v}"><label for="${r.id}_${c.v}">${c[lang]||c.en}</label></div>`
+    ).join('');
+    return `<div class="rating-row"><div class="rating-label">${r.label}</div><div class="rating-options">${opts}</div></div>`;
+  }).join('');
+
+  document.getElementById('bodyO3').innerHTML = `
+    <div class="note-box">${lbl(Q.secC)}</div>
+    <div class="question-group">
+      <div class="question-label">${lbl(Q.q11)} <span class="req">*</span></div>${q11fields}
+    </div>
+    <div class="question-group">
+      <div class="question-label">${lbl(Q.q12)}</div>${q12fields}
+    </div>
+    <div class="question-group">
+      <div class="q-note">${lbl(Q.secPrio)}</div>
+      <div class="rating-scale-header">
+        <div class="label-spacer"></div><div class="scale-labels">${scaleHdr}</div>
+      </div>
+      ${prioRowsHtml}
+    </div>`;
+}
+
+function renderO4() {
+  const Q = {
+    q14: L('14. Key suggestions for the National Higher Education Policy (up to 5):','14. ජාතික උසස් අධ්‍යාපන ප්‍රතිපත්තිය සඳහා ප්‍රධාන යෝජනා (5ක් දක්වා):','14. தேசிய உயர்கல்விக் கொள்கைக்கான முதன்மையான பரிந்துரைகள்:'),
+    q15: L('15. Any other suggestions or comments?','15. වෙනත් යෝජනා හෝ අදහස් තිබේ ද?','15. வேறு ஏதேனும் பரிந்துரைகள் மற்றும் கருத்துகள்?'),
+    sug: L('Suggestion','යෝජනාව','பரிந்துரை'),
+  };
+
+  const sugFields = [1,2,3,4,5].map(i=>
+    `<div style="display:flex;gap:8px;margin-bottom:8px;"><div style="min-width:28px;text-align:center;font-size:0.8rem;font-weight:600;color:var(--gold);padding-top:10px;">${i}</div>
+     <input type="text" id="o_sug${i}" name="o_sug${i}" placeholder="${lbl(Q.sug)} ${i}"></div>`
+  ).join('');
+
+  document.getElementById('bodyO4').innerHTML = `
+    <div class="question-group">
+      <div class="question-label">${lbl(Q.q14)} <span class="req">*</span></div>${sugFields}
+    </div>
+    <div class="question-group">
+      <div class="question-label">${lbl(Q.q15)}</div>
+      <textarea id="o_comments" name="o_comments" rows="4"></textarea>
+    </div>`;
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+const PAGES_WELCOME = ['pageWelcome'];
+const PAGES_IDENTIFY = ['page0'];
+const STUDENT_STEPS = ['pageS1','pageS2','pageS3','pageS4','pageS5'];
+const OTHER_STEPS = ['pageO1','pageO2','pageO3','pageO4'];
+
+let steps = []; // will be set after identification
+
+function getSteps() {
+  if(!respondentType) return ['pageWelcome','page0','pageDone'];
+  if(isStudent) return ['pageWelcome','page0',...STUDENT_STEPS,'pageDone'];
+  return ['pageWelcome','page0',...OTHER_STEPS,'pageDone'];
+}
+
+function isLastStep() {
+  const s = getSteps();
+  const cur = s[currentStep];
+  if(cur === 'page0' || cur === 'pageWelcome') return false;
+  return s[currentStep + 1] === 'pageDone';
+}
+
+function showPage(pageId) {
+  const allPages = ['pageWelcome','page0','pageS1','pageS2','pageS3','pageS4','pageS5','pageO1','pageO2','pageO3','pageO4','pageDone'];
+  allPages.forEach(p => document.getElementById(p).classList.add('hidden'));
+  document.getElementById(pageId).classList.remove('hidden');
+}
+
+function updateNav() {
+  const steps = getSteps();
+  const total = steps.length - 2; // exclude welcome and done
+  const current = currentStep; // 0=welcome, 1=identify, 2..=sections
+
+  const btnPrev = document.getElementById('btnPrev');
+  const btnNext = document.getElementById('btnNext');
+  const stepInfo = document.getElementById('stepInfo');
+  const navArea = document.getElementById('navArea');
+
+  if(steps[currentStep] === 'pageDone') {
+    navArea.classList.add('hidden');
+    return;
+  }
+  navArea.classList.remove('hidden');
+
+  btnPrev.classList.toggle('hidden', currentStep <= 0);
+  document.getElementById('btnPrevLbl').textContent = t('prev');
+
+  if(currentStep === -1) {
+    document.getElementById('btnNextLbl').textContent = t('start');
+    stepInfo.textContent = '';
+  } else if(isLastStep()) {
+    document.getElementById('btnNextLbl').textContent = t('submit');
+    stepInfo.textContent = `${t('step')} ${currentStep} ${t('of')} ${total}`;
+  } else {
+    document.getElementById('btnNextLbl').textContent = t('next');
+    stepInfo.textContent = currentStep > 0 ? `${t('step')} ${currentStep} ${t('of')} ${total}` : '';
+  }
+
+  // Progress bar
+  const prog = currentStep < 0 ? 0 : Math.round((currentStep / Math.max(total,1)) * 100);
+  document.getElementById('progBar').style.width = prog + '%';
+}
+
+function renderCurrentPage() {
+  const steps = getSteps();
+  if(currentStep === -1) {
+    showPage('pageWelcome');
+    updateUITexts();
+    updateNav();
+    return;
+  }
+  const pageId = steps[currentStep];
+  if(!pageId) return;
+  showPage(pageId);
+
+  // Re-render page with current language
+  if(pageId==='page0') renderQ0();
+  else if(pageId==='pageS1') renderS1();
+  else if(pageId==='pageS2') renderS2();
+  else if(pageId==='pageS3') renderS3();
+  else if(pageId==='pageS4') renderS4();
+  else if(pageId==='pageS5') renderS5();
+  else if(pageId==='pageO1') renderO1();
+  else if(pageId==='pageO2') renderO2();
+  else if(pageId==='pageO3') renderO3();
+  else if(pageId==='pageO4') renderO4();
+  else if(pageId==='pageDone') {
+    document.getElementById('tyTitle').textContent = t('ty_title');
+    document.getElementById('tyMsg').textContent = t('ty_msg');
+    document.getElementById('tyBtn').textContent = t('ty_btn');
+    document.getElementById('navArea').classList.add('hidden');
+  }
+
+  updateUITexts();
+  updateNav();
+  restoreAnswers(pageId);
+}
+
+function renderQ0() {
+  const opts = choices.yi1gu94.map(c =>
+    `<div class="option-btn">
+      <input type="radio" id="resp_${c.v}" name="respondent_type" value="${c.v}">
+      <label for="resp_${c.v}">${c[lang]||c.en}</label>
+    </div>`
+  ).join('');
+  document.getElementById('q0opts').innerHTML = opts;
+  document.getElementById('q0label').textContent = UI[lang].q0;
+  document.getElementById('s0title').textContent = UI[lang].s0;
+
+  // Restore if already selected
+  if(respondentType) {
+    const el = document.getElementById('resp_'+respondentType);
+    if(el) el.checked = true;
+  }
+}
+
+function goNext() {
+  if(currentStep === -1) {
+    currentStep = 1; // go to page0 (identify)
+    renderCurrentPage();
+    return;
+  }
+
+  const steps = getSteps();
+  const pageId = steps[currentStep];
+
+  // Save current page answers
+  saveAnswers(pageId);
+
+  // Special: identify page
+  if(pageId === 'page0') {
+    const sel = document.querySelector('[name="respondent_type"]:checked');
+    if(!sel) { alert(t('required_err')); return; }
+    respondentType = sel.value;
+    isStudent = studentTypes.includes(respondentType);
+    answers['respondent_type'] = respondentType;
+  }
+
+  // Last section → submit
+  if(isLastStep()) {
+    submitForm();
+    return;
+  }
+
+  currentStep++;
+  renderCurrentPage();
+  window.scrollTo(0,0);
+}
+
+function goPrev() {
+  if(currentStep <= 1) { currentStep = -1; }
+  else { currentStep--; }
+  renderCurrentPage();
+  window.scrollTo(0,0);
+}
+
+function saveAnswers(pageId) {
+  // Collect all form fields on the current page
+  const page = document.getElementById(pageId);
+  if(!page) return;
+  page.querySelectorAll('input, textarea, select').forEach(el => {
+    if(!el.name) return;
+    if(el.type==='radio') { if(el.checked) answers[el.name]=el.value; }
+    else if(el.type==='checkbox') {
+      if(!answers[el.name]) answers[el.name]=[];
+      if(el.checked && !answers[el.name].includes(el.value)) answers[el.name].push(el.value);
+    }
+    else { answers[el.name]=el.value; }
+  });
+}
+
+function restoreAnswers(pageId) {
+  const page = document.getElementById(pageId);
+  if(!page) return;
+  setTimeout(() => {
+    page.querySelectorAll('input, textarea, select').forEach(el => {
+      if(!el.name || !(el.name in answers)) return;
+      const val = answers[el.name];
+      if(el.type==='radio') { el.checked = el.value===val; }
+      else if(el.type==='checkbox') { el.checked = Array.isArray(val) && val.includes(el.value); }
+      else if(el.type!=='submit') { el.value = val||''; }
+    });
+    // Re-trigger conditional visibilities
+    ['disability','minority','loan','fin_support','work_s'].forEach(name => {
+      const sel = page.querySelector(`[name="${name}"]:checked`);
+      if(sel) sel.dispatchEvent(new Event('change'));
+    });
+  }, 50);
+}
+
+// ============================================================
+// CONFIGURATION — Paste your Apps Script Web App URL below
+// ============================================================
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxAmV2Qbw45rGTpcwZhhSY89357ylnHGj2nMSgIDEVjECFZ8hgfe3JXypwTt0-5uIqp/exec";
+
+// ============================================================
+// SUBMIT & GOOGLE SHEETS
+// ============================================================
+async function submitForm() {
+  const steps = getSteps();
+  saveAnswers(steps[currentStep]);
+
+  // Show submitting state
+  const btn = document.getElementById('btnNext');
+  btn.disabled = true;
+  btn.innerHTML = `<span id="btnNextLbl">⏳ Submitting...</span>`;
+
+  let submitted = false;
+
+  // Send to Google Sheets
+  if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== "YOUR_APPS_SCRIPT_URL_HERE") {
+    try {
+      // Use hidden iframe form POST — bypasses CORS and URL length limits
+      const iframe = document.createElement('iframe');
+      iframe.name = 'hidden_iframe';
+      iframe.style.display = 'none';
+      document.body.appendChild(iframe);
+
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = GOOGLE_SCRIPT_URL;
+      form.target = 'hidden_iframe';
+      form.style.display = 'none';
+
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'data';
+      input.value = JSON.stringify(answers);
+      form.appendChild(input);
+
+      document.body.appendChild(form);
+      form.submit();
+
+      // Small delay to allow submission before navigating
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      submitted = true;
+
+      // Cleanup
+      document.body.removeChild(form);
+      document.body.removeChild(iframe);
+    } catch (err) {
+      console.error("Submission error:", err);
+    }
+  }
+
+  // Always also download local Excel copy for respondent
+  downloadExcel();
+
+  // Move to thank-you page
+  currentStep = steps.length - 1;
+  renderCurrentPage();
+}
+
+function downloadExcel() {
+  const wb = XLSX.utils.book_new();
+  const rows = [
+    Object.keys(answers),
+    Object.values(answers).map(v => Array.isArray(v) ? v.join(', ') : v)
+  ];
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols'] = Object.keys(answers).map(() => ({ wch: 30 }));
+  XLSX.utils.book_append_sheet(wb, ws, 'Responses');
+  XLSX.writeFile(wb, `MOHE_Survey_Response_${new Date().toISOString().split('T')[0]}.xlsx`);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+currentStep = -1;
+updateUITexts();
+updateNav();
+showPage('pageWelcome');
+</script>
+</body>
+</html>
